@@ -36,16 +36,17 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.app.recetasEIngredientes.R
 import com.app.recetasEIngredientes.constantes.Colores
 import com.app.recetasEIngredientes.constantes.Fuentes
 
 
 @Composable
-fun LoginView() {
+fun LoginView(navController: NavHostController) {
 
     // view model que gestiona la vista
-    val loginViewModel = LoginViewModel()
+    val loginViewModel = LoginViewModel(navController)
 
     // imagen de fondo
     Image(
@@ -60,7 +61,7 @@ fun LoginView() {
 
         Header(Modifier.weight(2f))
         Body(loginViewModel, Modifier.weight(7f))
-        Footer(Modifier.weight(2f))
+        Footer(loginViewModel, Modifier.weight(2f))
 
     }
 
@@ -128,14 +129,14 @@ fun Body(loginViewModel: LoginViewModel, modifier: Modifier) {
 
         Spacer(modifier = Modifier.padding(16.dp))
 
-        BotonLogin(isLoginEnabled, colorBotonLogin)
+        BotonLogin(isLoginEnabled, colorBotonLogin, loginViewModel)
 
     }
 
 }
 
 @Composable
-fun Footer(modifier: Modifier) {
+fun Footer(loginViewModel: LoginViewModel, modifier: Modifier) {
 
     Column(
         modifier = modifier
@@ -148,7 +149,7 @@ fun Footer(modifier: Modifier) {
 
         ) {
         Column(modifier = Modifier.padding(vertical = 8.dp)) {
-            CrearCuenta()
+            CrearCuenta({ loginViewModel.navigateToCreateAccount() })
             Spacer(modifier = Modifier.padding(8.dp))
             BotonesRedesSociales()
         }
@@ -157,7 +158,8 @@ fun Footer(modifier: Modifier) {
 }
 
 @Composable
-fun CrearCuenta() {
+fun CrearCuenta(navigateToCreateAccount: () -> Unit) {
+
     // crea una cuenta o ingresa con
     Row(
         horizontalArrangement = Arrangement.Center,
@@ -165,7 +167,12 @@ fun CrearCuenta() {
         modifier = Modifier.fillMaxWidth()
 
     ) {
-        BotonRegistro("Crear una cuenta ")
+        Text(
+            text = "Crear una cuenta ",
+            color = Colores.ARANDANO,
+            fontFamily = Fuentes.REM_MEDIUM,
+            modifier = Modifier.clickable { navigateToCreateAccount() }
+        )
         Text(text = "o ingresar con:", fontFamily = Fuentes.REM_MEDIUM)
     }
 
@@ -278,7 +285,11 @@ fun TextInputPassword(
 }
 
 @Composable
-fun BotonLogin(isLoginEnabled: Boolean, colorBotonLogin: Color) {
+fun BotonLogin(
+    isLoginEnabled: Boolean,
+    colorBotonLogin: Color,
+    loginViewModel: LoginViewModel
+) {
 
     Button(
         enabled = isLoginEnabled,
@@ -287,8 +298,8 @@ fun BotonLogin(isLoginEnabled: Boolean, colorBotonLogin: Color) {
             contentColor = Colores.BLANCO,
             disabledContainerColor = colorBotonLogin,
             disabledContentColor = Colores.BLANCO
-            ),
-        onClick = { /*TODO*/ },
+        ),
+        onClick = { loginViewModel.navigateToDashboard() },
 
         modifier = Modifier
             .fillMaxWidth()
@@ -306,12 +317,12 @@ fun BotonLogin(isLoginEnabled: Boolean, colorBotonLogin: Color) {
 }
 
 @Composable
-fun BotonRegistro(value: String) {
+fun BotonRegistro(value: String, navigateToCreateAccount: () -> Unit = {}) {
     Text(
         text = value,
         color = Colores.ARANDANO,
         fontFamily = Fuentes.REM_MEDIUM,
-        modifier = Modifier.clickable { }
+        modifier = Modifier.clickable { navigateToCreateAccount() }
     )
 }
 

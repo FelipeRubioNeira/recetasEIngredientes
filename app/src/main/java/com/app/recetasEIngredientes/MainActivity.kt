@@ -8,6 +8,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.app.recetasEIngredientes.ui.theme.RecetasEIngredientesTheme
 import com.app.recetasEIngredientes.login.LoginView
+import com.app.recetasEIngredientes.navegacion.Navigation
 
 class MainActivity : ComponentActivity() {
 
@@ -18,8 +19,8 @@ class MainActivity : ComponentActivity() {
             RecetasEIngredientesTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
 
-                    // primera pantalla
-                    LoginView()
+                    // lo primero que hacemos en iniciar con el navigation
+                    Navigation()
 
                 }
             }

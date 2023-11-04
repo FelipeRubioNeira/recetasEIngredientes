@@ -1,0 +1,48 @@
+Documentación de pantalla de login
+Descripción general
+La pantalla de login permite al usuario ingresar su usuario y contraseña para acceder a la aplicación. Consta de los siguientes componentes principales:
+
+Encabezado con título
+Cuerpo con campos de texto para usuario y contraseña
+Pie con opciones para registrarse y acceder con redes sociales
+Se utiliza ViewModel para gestionar el estado de la pantalla.
+
+Componentes
+LoginView
+Pantalla principal que contiene los demás componentes
+Fondo con imagen que ocupa toda la pantalla
+Columna central con padding para alojar los otros componentes
+Header
+Encabezado con título centrado "Bienvenido a Recetas e Ingredientes"
+Body
+Columna vertical para los campos de ingreso de usuario y contraseña
+Etiquetas para cada campo
+Campos de texto para ingresar usuario y contraseña
+Usa OutlinedTextField de Material Design 3
+Maneja eventos de cambio de valor
+Oculta contraseña por defecto
+Botón de ingreso
+Deshabilitado inicialmente
+Color gris transparente inicial
+Cambia a habilitado y color azul cuando credenciales completas
+Footer
+Pie de página con opciones secundarias
+Botón para crear cuenta
+Iconos para acceder con Facebook y Google
+ViewModel
+LoginViewModel
+Gestiona estado de la vista
+Observables para valores de usuario y contraseña
+Validación de habilitación de botón de ingreso
+Manejo de visibilidad de contraseña
+Eventos de cambio de valores
+Recursos
+Colores personalizados
+Fuentes personalizadas
+Íconos y logos vectoriales
+Flujo
+Usuario abre pantalla
+Visualiza formulario con campos de ingreso y botón deshabilitado
+Ingresa usuario y contraseña
+Botón de ingreso se habilita al completar credenciales
+Al hacer click en botón de ingreso, se autentica y accede a la aplicación
