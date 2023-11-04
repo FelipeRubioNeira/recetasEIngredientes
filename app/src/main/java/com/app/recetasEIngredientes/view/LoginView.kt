@@ -23,12 +23,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -40,15 +42,19 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
 import com.app.recetasEIngredientes.R
 import com.app.recetasEIngredientes.constantes.Colores
 import com.app.recetasEIngredientes.constantes.Fuentes
+import com.app.recetasEIngredientes.viewModel.LoginViewModel
 
 
-@Preview(showBackground = true, device = Devices.DEFAULT)
 @Composable
 fun LoginView() {
 
+    val loginViewModel = LoginViewModel()
+
+    // imagen de fondo
     Image(
         painter = painterResource(R.drawable.imagen_principal),
         contentDescription = "imagen principal",
@@ -56,13 +62,15 @@ fun LoginView() {
         modifier = Modifier.fillMaxSize()
     )
 
+    // contenedor principal
     Column(modifier = Modifier.padding(16.dp)) {
 
         Header(Modifier.weight(2f))
-        Body(Modifier.weight(7f))
+        Body(loginViewModel, Modifier.weight(7f))
         Footer(Modifier.weight(2f))
 
     }
+
 }
 
 @Composable
@@ -92,23 +100,42 @@ fun Header(modifier: Modifier) {
 }
 
 @Composable
-fun Body(modifier: Modifier) {
+fun Body(loginViewModel: LoginViewModel, modifier: Modifier) {
+
+    val user: String by loginViewModel.user.observeAsState(initial = "")
+    val password: String by loginViewModel.password.observeAsState(initial = "")
+    val passwordVisible: Boolean by loginViewModel.passwordVisible.observeAsState(initial = false)
+    val colorBotonLogin: Color by loginViewModel.colorBotonLogin.observeAsState(initial = Colores.GRIS_TRANSPARENTE)
+    val isLoginEnabled: Boolean by loginViewModel.isLoginEnabled.observeAsState(initial = false)
+
 
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center
     ) {
+
+        // usuario
         Label("Usuario")
-        TextInputUsuario()
+        TextInputUser(user) {
+            loginViewModel.onUserPasswordChanged(it, password)
+        }
 
         Spacer(modifier = Modifier.padding(8.dp))
 
+        // contraseña
         Label("Contraseña")
-        TextInputPassword()
+        TextInputPassword(
+            password,
+            passwordVisible,
+            { loginViewModel.onUserPasswordChanged(user, it) },
+            { loginViewModel.onPasswordVisibleChanged(it) }
+        )
+
 
         Spacer(modifier = Modifier.padding(16.dp))
 
-        BotonLogin()
+        BotonLogin(isLoginEnabled, colorBotonLogin)
+
     }
 
 }
@@ -185,14 +212,12 @@ fun Label(value: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextInputUsuario() {
-
-    var value by rememberSaveable { mutableStateOf("") }
+fun TextInputUser(user: String, onValueChange: (String) -> Unit) {
 
     OutlinedTextField(
-        value = value,
+        value = user,
+        onValueChange = { onValueChange(it) }, // evento que se ejecuta cuando cambia el valor
         singleLine = true,
-        onValueChange = { value = it },
         label = { Text("Ingrese usuario", fontFamily = Fuentes.REM_LIGHT) },
         textStyle = TextStyle(fontFamily = Fuentes.REM_LIGHT),
 
@@ -214,14 +239,16 @@ fun TextInputUsuario() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextInputPassword() {
-
-    var value by rememberSaveable { mutableStateOf("") }
-    var passwordVisible by rememberSaveable { mutableStateOf(false) }
+fun TextInputPassword(
+    password: String,
+    passwordVisible: Boolean,
+    onValueChange: (String) -> Unit,
+    onPasswordVisibleChange: (Boolean) -> Unit
+) {
 
     OutlinedTextField(
-        value = value,
-        onValueChange = { value = it },
+        value = password,
+        onValueChange = { onValueChange(it) },
         singleLine = true,
         label = { Text("Ingrese contraseña") },
         textStyle = TextStyle(fontFamily = Fuentes.REM_LIGHT),
@@ -234,7 +261,7 @@ fun TextInputPassword() {
                 ),
                 contentDescription = "mostrar password",
                 modifier = Modifier.clickable {
-                    passwordVisible = !passwordVisible
+                    onPasswordVisibleChange(!passwordVisible)
                 },
                 tint = Colores.GRIS_TRANSPARENTE
             )
@@ -257,16 +284,24 @@ fun TextInputPassword() {
 }
 
 @Composable
-fun BotonLogin() {
+fun BotonLogin(isLoginEnabled: Boolean, colorBotonLogin: Color) {
+
     Button(
+        enabled = isLoginEnabled,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = colorBotonLogin,
+            contentColor = Colores.BLANCO,
+            disabledContainerColor = colorBotonLogin,
+            disabledContentColor = Colores.BLANCO
+            ),
+        onClick = { /*TODO*/ },
+
         modifier = Modifier
             .fillMaxWidth()
-            .height(60.dp),
-        colors = ButtonDefaults.buttonColors(
-            contentColor = Colores.BLANCO,
-            containerColor = Colores.ROJO
-        ),
-        onClick = { /*TODO*/ }) {
+            .height(60.dp)
+    )
+
+    {
         Text(
             text = "Ingresar",
             fontWeight = FontWeight.Bold,
