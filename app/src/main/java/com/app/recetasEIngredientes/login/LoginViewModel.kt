@@ -1,4 +1,4 @@
-package com.app.recetasEIngredientes.viewModel
+package com.app.recetasEIngredientes.login
 
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.LiveData
