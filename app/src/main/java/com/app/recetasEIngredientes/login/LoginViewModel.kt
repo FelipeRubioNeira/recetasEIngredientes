@@ -1,7 +1,11 @@
 package com.app.recetasEIngredientes.login
 
-import android.util.Log
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -31,6 +35,11 @@ class LoginViewModel(navController: NavHostController) : ViewModel() {
 
     private val _isLoginEnabled = MutableLiveData<Boolean>()
     val isLoginEnabled: LiveData<Boolean> = _isLoginEnabled
+
+    // interaction del teclado u otros gestos para el boton de login (se usa para ocultar el teclado)
+    private val _interactionSource = MutableLiveData<MutableInteractionSource>()
+    val interactionSource: LiveData<MutableInteractionSource> = _interactionSource
+
 
     // funcion para actualizar el user y el password
     fun onUserPasswordChanged(user: String = "", password: String = "") {
@@ -64,10 +73,18 @@ class LoginViewModel(navController: NavHostController) : ViewModel() {
     fun navigateToDashboard() {
 
         // solo navegamos si el login esta habilitado
-        if(_isLoginEnabled.value == true){
+        if (_isLoginEnabled.value == true) {
             _navController.navigate(Routes.DASHBOARD)
         }
 
     }
+
+    // ocultar el teclado
+    @OptIn(ExperimentalComposeUiApi::class)
+    @Composable
+    fun getKeyboardController(): SoftwareKeyboardController? {
+        return LocalSoftwareKeyboardController.current
+    }
+
 
 }

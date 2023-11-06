@@ -3,6 +3,7 @@ package com.app.recetasEIngredientes.login
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,8 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,14 +21,19 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults.outlinedTextFieldC
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -44,18 +48,33 @@ import com.app.recetasEIngredientes.constantes.Colores
 import com.app.recetasEIngredientes.constantes.Fuentes
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LoginView(navController: NavHostController) {
 
-    // view model que gestiona la vista
+    // view model que gestiona la vista de esta pantalla
     val loginViewModel = LoginViewModel(navController)
+
+    // controlador del teclado que se usa para ocultar el teclado cuando se hace click en cualquier parte de la pantalla
+    val controller = loginViewModel.getKeyboardController()
+
+    // interaction del teclado u otros gestos para el boton de login (se usa para ocultar el teclado)
+    val source: MutableInteractionSource by loginViewModel.interactionSource.observeAsState(initial = MutableInteractionSource())
+
 
     // imagen de fondo
     Image(
         painter = painterResource(R.drawable.imagen_principal),
         contentDescription = "imagen principal",
         contentScale = ContentScale.FillHeight,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable(
+                interactionSource = source,
+                indication = null
+            ) {
+                controller?.hide()
+            }
     )
 
     // contenedor principal
@@ -113,10 +132,11 @@ fun Body(loginViewModel: LoginViewModel, modifier: Modifier) {
 
         // usuario
         Label("Usuario")
-        TextInputUser(user) {
-            loginViewModel.onUserPasswordChanged(it, password)
-        }
-
+        TextInputUser(
+            user,
+            //{loginViewModel.onUserPasswordChanged(it, password) },
+            loginViewModel
+        )
         Spacer(modifier = Modifier.padding(8.dp))
 
         // contraseña
@@ -213,13 +233,13 @@ fun Label(value: String) {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun TextInputUser(user: String, onValueChange: (String) -> Unit) {
+fun TextInputUser(user: String, loginViewModel: LoginViewModel) {
 
     OutlinedTextField(
         value = user,
-        onValueChange = { onValueChange(it) }, // evento que se ejecuta cuando cambia el valor
+        onValueChange = { loginViewModel.onUserPasswordChanged(it) }, // evento que se ejecuta cuando cambia el valor
         singleLine = true,
         label = { Text("Ingrese usuario", fontFamily = Fuentes.REM_LIGHT) },
         textStyle = TextStyle(fontFamily = Fuentes.REM_LIGHT),
@@ -235,8 +255,9 @@ fun TextInputUser(user: String, onValueChange: (String) -> Unit) {
             textColor = Colores.BLANCO
         ),
 
+        modifier = Modifier
+            .fillMaxWidth()
 
-        modifier = Modifier.fillMaxWidth()
     )
 }
 
