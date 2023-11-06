@@ -16,6 +16,7 @@ fun Navigation() {
     NavHost(
         navController = navController,
         startDestination = Routes.LOGIN
+        //startDestination = Routes.DASHBOARD
 
     ) {
 
