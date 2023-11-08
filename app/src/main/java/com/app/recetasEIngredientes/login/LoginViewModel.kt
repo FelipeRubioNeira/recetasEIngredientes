@@ -74,7 +74,7 @@ class LoginViewModel(navController: NavHostController) : ViewModel() {
 
         // solo navegamos si el login esta habilitado
         if (_isLoginEnabled.value == true) {
-            _navController.navigate(Routes.DASHBOARD)
+            _navController.navigate(Routes.MAIN_MENU)
         }
 
     }

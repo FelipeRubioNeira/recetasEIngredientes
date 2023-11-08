@@ -5,8 +5,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.app.recetasEIngredientes.createAccount.CreateAccountView
-import com.app.recetasEIngredientes.dashboard.DashboardView
 import com.app.recetasEIngredientes.login.LoginView
+import com.app.recetasEIngredientes.mainMenu.MainMenuView
+
 
 @Composable
 fun Navigation() {
@@ -15,8 +16,9 @@ fun Navigation() {
 
     NavHost(
         navController = navController,
-        startDestination = Routes.LOGIN
-        //startDestination = Routes.DASHBOARD
+        //startDestination = Routes.LOGIN
+        startDestination = Routes.MAIN_MENU
+
 
     ) {
 
@@ -31,11 +33,9 @@ fun Navigation() {
         }
 
         // pantalla principal del usuario (en un futuro puede ser otro navegador)
-        composable(Routes.DASHBOARD) {
-             DashboardView()
+        composable(Routes.MAIN_MENU) {
+            MainMenuView(navController)
         }
-
-
 
     }
 }

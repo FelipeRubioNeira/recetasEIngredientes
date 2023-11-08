@@ -132,11 +132,7 @@ fun Body(loginViewModel: LoginViewModel, modifier: Modifier) {
 
         // usuario
         Label("Usuario")
-        TextInputUser(
-            user,
-            //{loginViewModel.onUserPasswordChanged(it, password) },
-            loginViewModel
-        )
+        TextInputUser(user, loginViewModel, password)
         Spacer(modifier = Modifier.padding(8.dp))
 
         // contraseña
@@ -235,11 +231,16 @@ fun Label(value: String) {
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun TextInputUser(user: String, loginViewModel: LoginViewModel) {
+fun TextInputUser(user: String, loginViewModel: LoginViewModel, password: String) {
 
     OutlinedTextField(
         value = user,
-        onValueChange = { loginViewModel.onUserPasswordChanged(it) }, // evento que se ejecuta cuando cambia el valor
+        onValueChange = {
+            loginViewModel.onUserPasswordChanged(
+                it,
+                password
+            )
+        }, // evento que se ejecuta cuando cambia el valor
         singleLine = true,
         label = { Text("Ingrese usuario", fontFamily = Fuentes.REM_LIGHT) },
         textStyle = TextStyle(fontFamily = Fuentes.REM_LIGHT),
