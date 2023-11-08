@@ -31,6 +31,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -97,11 +98,15 @@ fun ButtonNavigationBar(mainMenuViewModel: MainMenuViewModel) {
     var selectedIndex by rememberSaveable { mutableStateOf(0) }
     val screens = mainMenuViewModel.screens
 
-    NavigationBar {
+    NavigationBar(
+        containerColor = Colores.ROJO,
+    ) {
         screens.forEachIndexed() { index, screen ->
+
             NavigationBarItem(
                 selected = selectedIndex == index,
                 onClick = { selectedIndex = index },
+                label = { Text(text = screen.name, fontFamily = Fuentes.REM_LIGHT) },
                 icon = {
                     Icon(
                         painter = painterResource(
@@ -112,25 +117,20 @@ fun ButtonNavigationBar(mainMenuViewModel: MainMenuViewModel) {
                             }
                         ),
                         contentDescription = "icono de semana",
-                        tint = Colores.ROJO,
-                        modifier = Modifier.size(30.dp)
+                        modifier = Modifier.size(30.dp),
                     )
                 },
 
-                label = { Text(text = screen.name, fontFamily = Fuentes.REM_LIGHT) },
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = Colores.BLANCO,
-                    unselectedIconColor = Colores.GRIS_TRANSPARENTE
-                ),
-
+                    unselectedIconColor = Colores.GRIS_TRANSPARENTE,
+                    selectedTextColor = Colores.BLANCO,
+                    unselectedTextColor = Colores.GRIS_TRANSPARENTE,
+                    indicatorColor = Colores.ROJO_OSCURO
                 )
+            )
         }
     }
-
-}
-
-fun NavigationItem() {
-
 }
 
 @Composable
