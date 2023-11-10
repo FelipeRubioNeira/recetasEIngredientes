@@ -70,11 +70,11 @@ class LoginViewModel(navController: NavHostController) : ViewModel() {
     }
 
     // navegar a la pantalla principal
-    fun navigateToDashboard() {
+    fun navigateToMainMenu() {
 
         // solo navegamos si el login esta habilitado
         if (_isLoginEnabled.value == true) {
-            _navController.navigate(Routes.MAIN_MENU)
+            _navController.navigate(Routes.MENU_PRINCIPAL)
         }
 
     }

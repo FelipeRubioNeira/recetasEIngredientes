@@ -323,7 +323,7 @@ fun BotonLogin(
             disabledContainerColor = colorBotonLogin,
             disabledContentColor = Colores.BLANCO
         ),
-        onClick = { loginViewModel.navigateToDashboard() },
+        onClick = { loginViewModel.navigateToMainMenu() },
 
         modifier = Modifier
             .fillMaxWidth()

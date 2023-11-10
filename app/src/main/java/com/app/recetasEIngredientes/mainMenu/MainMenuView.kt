@@ -1,23 +1,20 @@
 package com.app.recetasEIngredientes.mainMenu
 
-import androidx.compose.foundation.background
+import NavigatorMainMenu
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.BottomAppBar
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -26,35 +23,37 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.app.recetasEIngredientes.constantes.Colores
 import com.app.recetasEIngredientes.constantes.Fuentes
-import com.app.recetasEIngredientes.navegacion.MainMenuScreens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainMenuView(navController: NavController) {
 
+    val navController = rememberNavController()
     val mainMenuViewModel = MainMenuViewModel(navController)
 
     Scaffold(
         topBar = { TopBar() },
-        bottomBar = { ButtonNavigationBar(mainMenuViewModel) },
+        bottomBar = { ButtonNavigationBar(mainMenuViewModel, navController) },
         floatingActionButton = { BotonAgregar() }
 
-    ) { innerPadding ->
+    ) { innerPadding -> // padding del button navigation bar y del header de la pantalla
 
-        Body(innerPadding)
+        Body(innerPadding) {
+            NavigatorMainMenu(navController)
+        }
 
     }
 
@@ -83,20 +82,26 @@ fun Titulo(titulo: String = "") {
 }
 
 @Composable
-fun Body(innerPadding: PaddingValues) {
+fun Body(innerPadding: PaddingValues, body: @Composable () -> Unit) {
+
     Column(
         modifier = Modifier.padding(innerPadding),
         //verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-
+        body()
     }
 }
 
-@Composable
-fun ButtonNavigationBar(mainMenuViewModel: MainMenuViewModel) {
 
-    var selectedIndex by rememberSaveable { mutableStateOf(0) }
-    val screens = mainMenuViewModel.screens
+@Composable
+fun ButtonNavigationBar(mainMenuViewModel: MainMenuViewModel, navController: NavController) {
+
+    val selectedIndex: Int by mainMenuViewModel.selectedIndex.observeAsState(initial = 0)
+    val screens = mainMenuViewModel.itemsMenu
+
+
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
 
     NavigationBar(
         containerColor = Colores.ROJO,
@@ -104,8 +109,9 @@ fun ButtonNavigationBar(mainMenuViewModel: MainMenuViewModel) {
         screens.forEachIndexed() { index, screen ->
 
             NavigationBarItem(
-                selected = selectedIndex == index,
-                onClick = { selectedIndex = index },
+                selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                onClick = { navController.navigate(screen.route) },
+
                 label = { Text(text = screen.name, fontFamily = Fuentes.REM_LIGHT) },
                 icon = {
                     Icon(
@@ -120,7 +126,6 @@ fun ButtonNavigationBar(mainMenuViewModel: MainMenuViewModel) {
                         modifier = Modifier.size(30.dp),
                     )
                 },
-
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = Colores.BLANCO,
                     unselectedIconColor = Colores.GRIS_TRANSPARENTE,
@@ -131,64 +136,6 @@ fun ButtonNavigationBar(mainMenuViewModel: MainMenuViewModel) {
             )
         }
     }
-}
-
-@Composable
-fun BottomBar(navController: NavController) {
-
-    val items = listOf(
-        MainMenuScreens.Calendario,
-        MainMenuScreens.Recetas,
-        MainMenuScreens.Perfil
-    )
-
-    BottomAppBar(
-        containerColor = Colores.ROJO,
-        contentColor = Colores.BLANCO,
-    ) {
-        Row(modifier = Modifier.padding(2.dp)) {
-
-            items.forEach { screen ->
-                MenuItem(screen.name, Modifier.weight(1f)) {
-                    Icon(
-                        painter = painterResource(id = screen.resourceId),
-                        contentDescription = "icono de semana",
-                        tint = Colores.BLANCO,
-                        modifier = Modifier.size(30.dp)
-                    )
-                }
-            }
-
-//            MenuItem("Calendario", Modifier.weight(1f)) {
-//                Icon(
-//                    painter = painterResource(id = R.drawable.ic_calendar),
-//                    contentDescription = "icono de semana",
-//                    tint = Colores.BLANCO,
-//                    modifier = Modifier.size(30.dp)
-//                )
-//            }
-//
-//            MenuItem("Recetas", Modifier.weight(1f)){
-//                Icon(
-//                    painter = painterResource(id = R.drawable.ic_restaurant),
-//                    contentDescription = "icono de semana",
-//                    tint = Colores.BLANCO,
-//                    modifier = Modifier.size(30.dp)
-//                )
-//            }
-//
-//            MenuItem("Perfil", Modifier.weight(1f)){
-//                Icon(
-//                    painter = painterResource(id = R.drawable.ic_account),
-//                    contentDescription = "icono de semana",
-//                    tint = Colores.BLANCO,
-//                    modifier = Modifier.size(30.dp)
-//                )
-//            }
-        }
-
-    }
-
 }
 
 @Composable

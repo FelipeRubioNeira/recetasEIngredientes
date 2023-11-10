@@ -1,12 +1,19 @@
 package com.app.recetasEIngredientes.navegacion
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navigation
 import com.app.recetasEIngredientes.createAccount.CreateAccountView
 import com.app.recetasEIngredientes.login.LoginView
 import com.app.recetasEIngredientes.mainMenu.MainMenuView
+import com.app.recetasEIngredientes.mainMenu.calentario.CalendarioView
+import com.app.recetasEIngredientes.mainMenu.perfil.PerfilView
+import com.app.recetasEIngredientes.mainMenu.recetas.RecetasView
 
 
 @Composable
@@ -16,10 +23,7 @@ fun Navigation() {
 
     NavHost(
         navController = navController,
-        //startDestination = Routes.LOGIN
-        startDestination = Routes.MAIN_MENU
-
-
+        startDestination = Routes.LOGIN
     ) {
 
         // pantalla de login
@@ -32,9 +36,36 @@ fun Navigation() {
             CreateAccountView(navController)
         }
 
-        // pantalla principal del usuario (en un futuro puede ser otro navegador)
-        composable(Routes.MAIN_MENU) {
+        menuPrincipal(navController)
+
+    }
+}
+
+fun NavGraphBuilder.menuPrincipal(navController: NavController) {
+
+    navigation(
+        route = Routes.NAVEGATOR_MENU_PRINCIPAL, // ahora el menu principal es un navegador
+        startDestination = Routes.MENU_PRINCIPAL,
+    ) {
+
+        composable(Routes.MENU_PRINCIPAL) {
             MainMenuView(navController)
+        }
+
+        composable(Routes.CALENDARIO) {
+            CalendarioView()
+        }
+
+        composable(Routes.RECETAS) {
+            RecetasView()
+        }
+
+        composable(Routes.PERFIL) {
+            PerfilView()
+        }
+
+        composable(Routes.CALENDARIO) {
+            PerfilView()
         }
 
     }
