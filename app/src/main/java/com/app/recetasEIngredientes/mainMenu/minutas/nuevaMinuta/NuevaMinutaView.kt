@@ -23,11 +23,11 @@ import com.app.recetasEIngredientes.mainMenu.TopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NuevaMinutaView(navController: NavController) {
+fun NuevaMinutaView(navControllerPrincipal: NavController) {
 
 
     Scaffold(
-        topBar = { TopBar(navController) },
+        topBar = { TopBar(navControllerPrincipal) },
 
         ) { innerPadding ->
 
@@ -41,11 +41,11 @@ fun NuevaMinutaView(navController: NavController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(navController: NavController) {
+fun TopBar(navControllerPrincipal: NavController) {
 
     TopAppBar(
         title = { Titulo("Nueva minuta") },
-        navigationIcon = { IconoGoBack(navController) },
+        navigationIcon = { IconoGoBack(navControllerPrincipal) },
         colors = TopAppBarDefaults.smallTopAppBarColors(
             containerColor = Colores.ROJO,
             titleContentColor = Colores.BLANCO,

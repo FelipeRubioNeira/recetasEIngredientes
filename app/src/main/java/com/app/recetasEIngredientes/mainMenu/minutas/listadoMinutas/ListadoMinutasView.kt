@@ -23,7 +23,7 @@ import com.app.recetasEIngredientes.navegacion.Routes
 
 
 @Composable
-fun ListadoMinutasView(navController: NavController) {
+fun ListadoMinutasView(navControllerPrincipal: NavController) {
 
     //val listadoMinutasViewModel = ListadoMinutasViewModel(navHostController)
 
@@ -33,13 +33,13 @@ fun ListadoMinutasView(navController: NavController) {
             .background(Color.White)
     ) {
         Text(text = "Listado Minutas", color = Colores.AZUL)
-        BotonAgregarMinuta(navController, Modifier.align(alignment = BottomEnd))
+        BotonAgregarMinuta(navControllerPrincipal, Modifier.align(alignment = BottomEnd))
     }
 }
 
 @Composable
 fun BotonAgregarMinuta(
-    navController: NavController,
+    navControllerPrincipal: NavController,
     modifier: Modifier,
 ) {
 
@@ -48,7 +48,7 @@ fun BotonAgregarMinuta(
         contentColor = Colores.BLANCO,
         modifier = modifier.padding(16.dp),
         onClick = {
-            navController.navigate(Routes.NUEVA_MINUTA)
+            navControllerPrincipal.navigate(Routes.NUEVA_MINUTA)
         }
     ) {
         Icon(Icons.Default.Add, contentDescription = "Add")

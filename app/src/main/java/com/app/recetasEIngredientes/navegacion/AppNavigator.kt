@@ -13,26 +13,31 @@ import com.app.recetasEIngredientes.mainMenu.minutas.nuevaMinuta.NuevaMinutaView
 @Composable
 fun AppNavigator() {
 
-    val navController = rememberNavController()
+    val navControllerPrincipal = rememberNavController()
 
     NavHost(
-        navController = navController,
+        navController = navControllerPrincipal,
         startDestination = Routes.MENU_PRINCIPAL
     ) {
 
         // pantalla de login
         composable(Routes.LOGIN) {
-            LoginView(navController)
+            LoginView(navControllerPrincipal)
         }
 
         // pantalla de crear cuenta
         composable(Routes.CREATE_ACCOUNT) {
-            CreateAccountView(navController)
+            CreateAccountView(navControllerPrincipal)
         }
 
         // pantalla de menu principal que contiene un navegador
         composable(Routes.MENU_PRINCIPAL) {
-            MainMenuView()
+            MainMenuView(navControllerPrincipal)
+        }
+
+        // del menu principal podemos navegar a las minutas
+        composable(Routes.NUEVA_MINUTA) {
+            NuevaMinutaView(navControllerPrincipal)
         }
 
 

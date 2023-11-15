@@ -35,19 +35,21 @@ import com.app.recetasEIngredientes.constantes.Fuentes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainMenuView() {
+fun MainMenuView(navControllerPrincipal: NavController) {
 
-    val navController = rememberNavController()
-    val mainMenuViewModel = MainMenuViewModel(navController)
-    val mostrarBarraNavegacionInferior: Boolean by mainMenuViewModel.barraNavegacionInferiorVisible.observeAsState(initial = true)
+    val navControllerMenu = rememberNavController()
+    val mainMenuViewModel = MainMenuViewModel(navControllerMenu)
+    val mostrarBarraNavegacionInferior: Boolean by mainMenuViewModel.barraNavegacionInferiorVisible.observeAsState(
+        initial = true
+    )
 
     Scaffold(
 
         topBar = { TopBar(mainMenuViewModel, mostrarBarraNavegacionInferior) },
         bottomBar = {
-            if (mostrarBarraNavegacionInferior) ButtonNavigationBar(
+            ButtonNavigationBar(
                 mainMenuViewModel,
-                navController
+                navControllerMenu
             )
         },
 
@@ -58,9 +60,7 @@ fun MainMenuView() {
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-
-            MainMenuNavigator(navController)
-
+            MainMenuNavigator(navControllerMenu, navControllerPrincipal)
         }
 
     }
@@ -113,12 +113,18 @@ fun Titulo(titulo: String = "") {
 }
 
 @Composable
-fun ButtonNavigationBar(mainMenuViewModel: MainMenuViewModel, navController: NavController) {
+fun ButtonNavigationBar(
+    mainMenuViewModel: MainMenuViewModel,
+    navControllerMenu: NavController,
+) {
 
+    // segun el index, se marca un icono u otro
     val selectedIndex: Int by mainMenuViewModel.selectedIndex.observeAsState(initial = 0)
+
+    // lista de pantallas que se muestran en el button navigation bar
     val screens = mainMenuViewModel.itemsMenu
 
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val navBackStackEntry by navControllerMenu.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
     NavigationBar(
@@ -129,8 +135,8 @@ fun ButtonNavigationBar(mainMenuViewModel: MainMenuViewModel, navController: Nav
             NavigationBarItem(
                 selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
                 onClick = {
-                    navController.navigate(screen.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
+                    navControllerMenu.navigate(screen.route) {
+                        popUpTo(navControllerMenu.graph.findStartDestination().id) {
                             saveState = true
                         }
                         launchSingleTop = true

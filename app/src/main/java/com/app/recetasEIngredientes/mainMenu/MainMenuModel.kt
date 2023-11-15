@@ -24,7 +24,7 @@ sealed class MenuItem(
 ) {
     object Minutas : MenuItem(
         name = "Minutas",
-        route = Routes.MINUTAS_NAVIGATOR,
+        route = Routes.LISTADO_MINUTAS,
         iconSelected = R.drawable.ic_calendar_selected,
         iconUnselected = R.drawable.ic_calendar
     )
