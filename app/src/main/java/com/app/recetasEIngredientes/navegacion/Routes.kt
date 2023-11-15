@@ -8,9 +8,13 @@ object Routes {
 
 
     // pantallas del menu prinicipal
-    val NAVEGATOR_MENU_PRINCIPAL = "NavigatorMenuPrincipal"
     val MENU_PRINCIPAL = "MenuPrincipal"
-    val CALENDARIO = "Calendario"
+
+    // rutas que son parte de minutas navigator
+    val MINUTAS_NAVIGATOR = "MinutasNavigator"
+    val LISTADO_MINUTAS = "ListadoMinutas"
+    val NUEVA_MINUTA = "NuevaMinuta"
+
     val RECETAS = "Recetas"
     val PERFIL = "Perfil"
 }

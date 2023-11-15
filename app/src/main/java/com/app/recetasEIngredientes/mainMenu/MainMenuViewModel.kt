@@ -1,13 +1,17 @@
 package com.app.recetasEIngredientes.mainMenu
 
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 
-class MainMenuViewModel(val navController: NavController) : ViewModel() {
+class MainMenuViewModel(navController: NavController) : ViewModel() {
 
     val mainMenuModel = MainMenuModel()
+    val _navController = navController
 
     // listado de pantallas que recibimos desde el model
     val itemsMenu = mainMenuModel.itemsMenu
@@ -15,19 +19,18 @@ class MainMenuViewModel(val navController: NavController) : ViewModel() {
     val _selectedIndex = MutableLiveData(0)
     val selectedIndex = _selectedIndex
 
-    fun setSelectedIndex(index: Int) {
-        _selectedIndex.value = index
+    val _barraNavegacionInferiorVisible = MutableLiveData(true)
+    val barraNavegacionInferiorVisible = _barraNavegacionInferiorVisible
+
+    fun goBack() {
+        _navController.popBackStack()
     }
 
-    fun navigate(rounte: String) {
-        navController.navigate(rounte) {
-            popUpTo(navController.graph.findStartDestination().id) {
-                saveState = true
-            }
-            launchSingleTop = true
-            restoreState = true
-        }
-
+    fun ocultarBarraNavegacionInferior() {
+        _barraNavegacionInferiorVisible.value = false
+    }
+    fun mostrarBarraNavegacionInferior() {
+        _barraNavegacionInferiorVisible.value = true
     }
 
 }
