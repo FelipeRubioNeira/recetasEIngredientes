@@ -39,13 +39,10 @@ fun MainMenuView(navControllerPrincipal: NavController) {
 
     val navControllerMenu = rememberNavController()
     val mainMenuViewModel = MainMenuViewModel(navControllerMenu)
-    val mostrarBarraNavegacionInferior: Boolean by mainMenuViewModel.barraNavegacionInferiorVisible.observeAsState(
-        initial = true
-    )
 
     Scaffold(
 
-        topBar = { TopBar(mainMenuViewModel, mostrarBarraNavegacionInferior) },
+        topBar = { TopBar(mainMenuViewModel) },
         bottomBar = {
             ButtonNavigationBar(
                 mainMenuViewModel,
@@ -69,12 +66,12 @@ fun MainMenuView(navControllerPrincipal: NavController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(mainMenuViewModel: MainMenuViewModel, mostrarBarraNavegacionInferior: Boolean) {
+fun TopBar(mainMenuViewModel: MainMenuViewModel) {
 
     TopAppBar(
         title = { Titulo("Bienvenido") },
         navigationIcon = {
-            if (!mostrarBarraNavegacionInferior) IconoGoBack(mainMenuViewModel)
+            IconoGoBack(mainMenuViewModel)
         },
         colors = TopAppBarDefaults.smallTopAppBarColors(
             containerColor = Colores.ROJO,
