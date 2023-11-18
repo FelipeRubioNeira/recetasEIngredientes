@@ -20,19 +20,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        suspend fun llamadaAPI(): String {
-//            // llamada a la api
-//            delay(5000L)
-//            return "llamada desde la api"
-//        }
-
-//        GlobalScope.launch {
-//            delay(3000L)
-//            Log.d("LogApp ", "llamada con delay")
-//        }
-
-        //Log.d("LogApp", "saludos desde el hilo principal")
-
         setContent {
             RecetasEIngredientesTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
