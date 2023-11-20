@@ -1,20 +1,29 @@
 package com.app.recetasEIngredientes.mainMenu.minutas.nuevaMinuta
 
+import android.widget.Space
 import androidx.annotation.ColorRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -28,6 +37,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -46,13 +57,13 @@ fun NuevaMinutaView(navControllerPrincipal: NavController) {
 
     Scaffold(
         topBar = { TopBar(navControllerPrincipal) },
-
-        ) { innerPadding ->
+    ) { innerPadding ->
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
+                .padding(horizontal = 16.dp)
         ) {
 
             Header()
@@ -85,18 +96,110 @@ fun Header() {
                 color = Colores.GRIS_OSCURO
             ),
 
-        )
+            )
     }
 }
 
 @Composable
 fun Body() {
 
-   Column {
+    Column(
+        modifier = Modifier.verticalScroll(rememberScrollState())
+    ) {
 
-   }
+        // Lunes
+        Fila("Lunes")
+
+        Spacer(modifier = Modifier.size(16.dp))
+
+        // Martes
+        Fila("Martes")
+
+        Spacer(modifier = Modifier.size(16.dp))
+
+        // Miercoles
+        Fila("Miercoles")
+
+        Spacer(modifier = Modifier.size(16.dp))
+
+        // Jueves
+        Fila("Jueves")
+
+        Spacer(modifier = Modifier.size(16.dp))
+
+        // Viernes
+        Fila("Viernes")
+
+        Spacer(modifier = Modifier.size(16.dp))
+
+        // Sabado
+        Fila("Sabado")
+
+        Spacer(modifier = Modifier.size(16.dp))
+
+        // Domingo
+        Fila("Domingo")
+
+    }
 }
-    
+
+@Composable
+fun Fila(nombre: String) {
+
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .height(42.dp)
+    ) {
+        Label(nombre, Modifier.weight(1f))
+        Spacer(modifier = Modifier.size(16.dp))
+        SelectorReceta(Modifier.weight(3f))
+    }
+}
+
+@Composable
+fun Label(value: String, modifier: Modifier = Modifier) {
+    Text(
+        text = value,
+        fontFamily = Fuentes.REM_LIGHT,
+        color = Colores.NEGRO,
+        fontSize = 16.sp,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun SelectorReceta(modifier: Modifier = Modifier) {
+
+
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .fillMaxSize()
+            .border(
+                width = 1.dp,
+                color = Colores.GRIS_OSCURO,
+                shape = MaterialTheme.shapes.small,
+            )
+            .padding(vertical = 4.dp, horizontal = 8.dp)
+            .clickable {  }
+    ) {
+        Text(
+            text = "Seleccione receta",
+            color = Colores.GRIS_OSCURO
+        )
+        Icon(
+            painter = painterResource(id = R.drawable.ic_down),
+            contentDescription = "down",
+            tint = Colores.GRIS_OSCURO
+        )
+
+    }
+
+}
+
 @Composable
 fun PlaceholderApp(value: String) {
     Text(
