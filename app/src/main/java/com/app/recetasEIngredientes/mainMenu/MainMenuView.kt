@@ -1,6 +1,7 @@
 package com.app.recetasEIngredientes.mainMenu
 
 import MainMenuNavigator
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -31,14 +32,22 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.app.recetasEIngredientes.constantes.Colores
 import com.app.recetasEIngredientes.constantes.Fuentes
+import com.app.recetasEIngredientes.mainMenu.minutas.listadoMinutas.ListadoMinutasViewModel
 
+/*
+* NAV CONTROLLER PRINCIPAL SE ENCARGA DE NAVEGAR EN EL STACK
+* NAV CONTROLLER MENU SE ENCARGA DE NAVEGAR ENTRE LAS 3 PANTALLAS DEL MENU */
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainMenuView(navControllerPrincipal: NavController) {
+fun MainMenuView(
+    navControllerStack: NavController,
+    listadoMinutasVM: ListadoMinutasViewModel,
+) {
 
-    val navControllerMenu = rememberNavController()
-    val mainMenuViewModel = MainMenuViewModel(navControllerMenu)
+    //  controller del menu de los iconos de abajo
+    val navControllerBotom = rememberNavController()
+    val mainMenuViewModel = MainMenuViewModel(navControllerBotom)
 
     Scaffold(
 
@@ -46,7 +55,7 @@ fun MainMenuView(navControllerPrincipal: NavController) {
         bottomBar = {
             ButtonNavigationBar(
                 mainMenuViewModel,
-                navControllerMenu
+                navControllerBotom
             )
         },
 
@@ -57,7 +66,10 @@ fun MainMenuView(navControllerPrincipal: NavController) {
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            MainMenuNavigator(navControllerMenu, navControllerPrincipal)
+            MainMenuNavigator(
+                navControllerBotom,
+                listadoMinutasVM,
+            )
         }
 
     }
@@ -85,12 +97,7 @@ fun IconoGoBack(mainMenuViewModel: MainMenuViewModel) {
 
     IconButton(
         modifier = Modifier,
-        onClick = {
-            //lo que deseamos es navegar hacia atras
-
-            mainMenuViewModel.goBack()
-            mainMenuViewModel.mostrarBarraNavegacionInferior()
-        }
+        onClick = { mainMenuViewModel.goBack() }
     ) {
         Icon(
             imageVector = Icons.Default.ArrowBack,

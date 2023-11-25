@@ -4,16 +4,17 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.app.recetasEIngredientes.mainMenu.minutas.listadoMinutas.ListadoMinutasView
+import com.app.recetasEIngredientes.mainMenu.minutas.listadoMinutas.ListadoMinutasViewModel
 import com.app.recetasEIngredientes.mainMenu.perfil.PerfilView
 import com.app.recetasEIngredientes.mainMenu.recetas.RecetasView
-import com.app.recetasEIngredientes.navegacion.MinutasNavigator
 import com.app.recetasEIngredientes.navegacion.Routes
 
 @Composable
 fun MainMenuNavigator(
     navControllerMenu: NavHostController,
-    navControllerPrincipal: NavController
+    listadoMinutasVM: ListadoMinutasViewModel,
 ) {
+
 
     NavHost(
         navController = navControllerMenu,
@@ -21,7 +22,7 @@ fun MainMenuNavigator(
     ) {
 
         composable(route = Routes.LISTADO_MINUTAS) {
-            ListadoMinutasView(navControllerPrincipal)
+            ListadoMinutasView(listadoMinutasVM)
         }
 
         composable(route = Routes.RECETAS) {

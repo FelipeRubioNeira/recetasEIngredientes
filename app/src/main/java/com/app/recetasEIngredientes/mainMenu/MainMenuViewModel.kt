@@ -19,18 +19,9 @@ class MainMenuViewModel(navController: NavController) : ViewModel() {
     val _selectedIndex = MutableLiveData(0)
     val selectedIndex = _selectedIndex
 
-    val _barraNavegacionInferiorVisible = MutableLiveData(true)
-    val barraNavegacionInferiorVisible = _barraNavegacionInferiorVisible
-
     fun goBack() {
         _navController.popBackStack()
     }
 
-    fun ocultarBarraNavegacionInferior() {
-        _barraNavegacionInferiorVisible.value = false
-    }
-    fun mostrarBarraNavegacionInferior() {
-        _barraNavegacionInferiorVisible.value = true
-    }
 
 }

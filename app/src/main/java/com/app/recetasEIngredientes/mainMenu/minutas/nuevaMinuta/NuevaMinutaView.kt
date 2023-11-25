@@ -1,8 +1,8 @@
 package com.app.recetasEIngredientes.mainMenu.minutas.nuevaMinuta
 
-import android.widget.Space
-import androidx.annotation.ColorRes
-import androidx.compose.foundation.background
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,6 +19,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,21 +28,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -49,112 +47,223 @@ import com.app.recetasEIngredientes.R
 import com.app.recetasEIngredientes.constantes.Colores
 import com.app.recetasEIngredientes.constantes.Fuentes
 import com.app.recetasEIngredientes.mainMenu.Titulo
+import com.app.recetasEIngredientes.mainMenu.minutas.ModalListadoRecetas
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NuevaMinutaView(navControllerPrincipal: NavController) {
+fun NuevaMinutaView(nuevaMinutasVM: NuevaMinutaViewModel) {
+
 
     Scaffold(
-        topBar = { TopBar(navControllerPrincipal) },
+        topBar = { TopBar(nuevaMinutasVM) },
     ) { innerPadding ->
 
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(horizontal = 16.dp)
         ) {
 
-            Header()
-            Body()
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+            ) {
+
+                Header(nuevaMinutasVM)
+
+                Spacer(modifier = Modifier.size(24.dp))
+
+                Body(nuevaMinutasVM)
+
+                Spacer(modifier = Modifier.size(16.dp))
+
+                Footer(nuevaMinutasVM)
+
+            }
+
+            ModalListadoRecetas(nuevaMinutasVM)
 
         }
+
     }
 }
 
+
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Header() {
+fun Header(nuevaMinutasVM: NuevaMinutaViewModel) {
 
-    var value by remember { mutableStateOf("") }
+    // ------------------------------ variables locales ----------------------------------------------------
 
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(16.dp)
-    ) {
-        Text(text = "Nueva minuta: ", fontFamily = Fuentes.REM_LIGHT)
-        TextField(
-            placeholder = { PlaceholderApp("Nombre de la minuta") },
-            value = value, onValueChange = { value = it },
-            singleLine = true,
+    val tituloMinuta: String by nuevaMinutasVM.tituloMinuta.observeAsState("Nueva minuta")
 
-            textStyle = TextStyle(
+
+
+    // ------------------------------ efectos -----------------------------------------
+
+    // es un effecto que se ejecuta la primera vez que se renderiza el componente
+    LaunchedEffect(key1 = true) {
+        nuevaMinutasVM.resetearFormulario()
+    }
+
+
+    // ------------------------------ composables -----------------------------------------
+
+    Column {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = "Nueva minuta: ",
                 fontFamily = Fuentes.REM_LIGHT,
-                fontSize = 16.sp,
-                color = Colores.GRIS_OSCURO
-            ),
+                modifier = Modifier.weight(1f)
+            )
+            TextField(
+                value = tituloMinuta,
+                onValueChange = { nuevaMinutasVM.setTituloMinuta(it) },
+                placeholder = { PlaceholderApp("Nombre de la minuta") },
+                singleLine = true,
+
+                textStyle = TextStyle(
+                    fontFamily = Fuentes.REM_LIGHT,
+                    fontSize = 16.sp,
+                    color = Colores.GRIS_OSCURO
+                ),
+                modifier = Modifier
+                    .weight(3f)
 
             )
+        }
+
+        Spacer(modifier = Modifier.size(16.dp))
+
+        Row {
+            Text(
+                text = "Fecha: ",
+                fontFamily = Fuentes.REM_LIGHT,
+                modifier = Modifier.weight(1f)
+            )
+            Text(
+                text = nuevaMinutasVM.fechaMinuta.value.toString(),
+                fontFamily = Fuentes.REM_LIGHT,
+                modifier = Modifier.weight(3f)
+            )
+        }
     }
+
 }
 
 @Composable
-fun Body() {
+fun Body(nuevaMinutasVM: NuevaMinutaViewModel) {
+
+    // lista de dias de la semana
+    val diasSemana = listOf(
+        "Lunes",
+        "Martes",
+        "Miércoles",
+        "Jueves",
+        "Viernes",
+        "Sábado",
+        "Domingo"
+    )
 
     Column(
         modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
 
-        // Lunes
-        Fila("Lunes")
-
-        Spacer(modifier = Modifier.size(16.dp))
-
-        // Martes
-        Fila("Martes")
-
-        Spacer(modifier = Modifier.size(16.dp))
-
-        // Miercoles
-        Fila("Miercoles")
-
-        Spacer(modifier = Modifier.size(16.dp))
-
-        // Jueves
-        Fila("Jueves")
-
-        Spacer(modifier = Modifier.size(16.dp))
-
-        // Viernes
-        Fila("Viernes")
-
-        Spacer(modifier = Modifier.size(16.dp))
-
-        // Sabado
-        Fila("Sabado")
-
-        Spacer(modifier = Modifier.size(16.dp))
-
-        // Domingo
-        Fila("Domingo")
+        diasSemana.forEach { dia ->
+            Fila(dia, nuevaMinutasVM)
+            Spacer(modifier = Modifier.size(16.dp))
+        }
 
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun Fila(nombre: String) {
+fun Footer(nuevaMinutasVM: NuevaMinutaViewModel) {
+
+
+    Row() {
+
+        BotonCancelar(
+            "Cancelar",
+            onClick = { nuevaMinutasVM.goBack() },
+            modifier = Modifier.weight(1f)
+        )
+
+        Spacer(modifier = Modifier.size(16.dp))
+
+        BotonAceptar(
+            "Guardar",
+            onClick = {
+                nuevaMinutasVM.agregarNuevaMinuta()
+            },
+            modifier = Modifier.weight(1f)
+        )
+    }
+
+}
+
+@Composable
+fun BotonAceptar(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    Button(
+        onClick = { onClick() },
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Colores.AZUL,
+        ),
+        modifier = modifier
+            .height(50.dp)
+            .clip(RoundedCornerShape(8.dp))
+    ) {
+        TextoBoton(text)
+    }
+}
+
+@Composable
+fun BotonCancelar(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    Button(
+        onClick = { onClick() },
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Colores.GRIS,
+        ),
+        modifier = modifier
+            .height(50.dp)
+            .clip(RoundedCornerShape(8.dp))
+    ) {
+        TextoBoton(text)
+    }
+}
+
+@Composable
+fun TextoBoton(text: String) {
+    Text(
+        text = text,
+        fontSize = 16.sp,
+        fontFamily = Fuentes.REM_BOLD,
+    )
+}
+
+@Composable
+fun Fila(dia: String, nuevaMinutasVM: NuevaMinutaViewModel) {
 
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .height(42.dp)
+        modifier = Modifier.height(42.dp)
     ) {
-        Label(nombre, Modifier.weight(1f))
+        Label(dia, Modifier.weight(1f))
         Spacer(modifier = Modifier.size(16.dp))
-        SelectorReceta(Modifier.weight(3f))
+        SelectorReceta(
+            Modifier.weight(3f),
+            nuevaMinutasVM,
+            dia
+        )
     }
 }
 
@@ -170,8 +279,18 @@ fun Label(value: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun SelectorReceta(modifier: Modifier = Modifier) {
+fun SelectorReceta(
+    modifier: Modifier = Modifier,
+    nuevaMinutasVM: NuevaMinutaViewModel,
+    dia: String
+) {
 
+    // Obtiene una referencia al LocalFocusManager
+    val focusManager = LocalFocusManager.current
+
+    // vamos a observar la variable valueDia y por defecto comienza como un mapa vacio
+    val values: Map<String, String> by nuevaMinutasVM.diasRecetas.observeAsState(emptyMap())
+    val valueDia: String = values[dia] ?: "Seleccione receta"
 
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -184,11 +303,14 @@ fun SelectorReceta(modifier: Modifier = Modifier) {
                 shape = MaterialTheme.shapes.small,
             )
             .padding(vertical = 4.dp, horizontal = 8.dp)
-            .clickable {  }
+            .clickable {
+                nuevaMinutasVM.mostrarModalRecetas(dia)
+                focusManager.clearFocus()
+            }
     ) {
         Text(
-            text = "Seleccione receta",
-            color = Colores.GRIS_OSCURO
+            text = valueDia,
+            color = Colores.NEGRO
         )
         Icon(
             painter = painterResource(id = R.drawable.ic_down),
@@ -212,11 +334,11 @@ fun PlaceholderApp(value: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(navControllerPrincipal: NavController) {
+fun TopBar(nuevaMinutasVM: NuevaMinutaViewModel) {
 
     TopAppBar(
         title = { Titulo("Nueva minuta") },
-        navigationIcon = { IconoGoBack(navControllerPrincipal) },
+        navigationIcon = { IconoGoBack(nuevaMinutasVM) },
         colors = TopAppBarDefaults.smallTopAppBarColors(
             containerColor = Colores.ROJO,
             titleContentColor = Colores.BLANCO,
@@ -225,11 +347,11 @@ fun TopBar(navControllerPrincipal: NavController) {
 }
 
 @Composable
-fun IconoGoBack(navController: NavController) {
+fun IconoGoBack(nuevaMinutasVM: NuevaMinutaViewModel) {
 
     IconButton(
         modifier = Modifier,
-        onClick = { navController.popBackStack() }
+        onClick = { nuevaMinutasVM.goBack() }
     ) {
         Icon(
             imageVector = Icons.Default.ArrowBack,
@@ -238,38 +360,3 @@ fun IconoGoBack(navController: NavController) {
         )
     }
 }
-
-@Composable
-fun PantallaVacia() {
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxSize()
-        //.padding(16.dp)
-    ) {
-        IconButton(
-            onClick = { /*TODO*/ },
-            modifier = Modifier.size(150.dp)
-
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_add),
-                contentDescription = "Add",
-                tint = Colores.GRIS_TRANSPARENTE,
-                modifier = Modifier
-                    .size(150.dp)
-            )
-        }
-
-        Text(
-            text = "Agrega una nueva minuta para la semana",
-            color = Colores.GRIS_OSCURO,
-            fontFamily = Fuentes.REM_LIGHT
-        )
-
-    }
-
-}
-
