@@ -13,8 +13,12 @@ class ListadoMinutasViewModel(val navController: NavController) : ViewModel() {
     private val _minutas = MutableLiveData<MutableList<NuevaMinutaModel>>()
     val minutas = _minutas
 
-    fun navigateTo(route: String) {
-        navController.navigate(route)
+    fun navegarCrearNuevaMinuta() {
+        navController.navigate("$Routes.NUEVA_MINUTA?minutaId=")
+    }
+
+    fun navegarEditarMinuta(minutaId: Int) {
+        navController.navigate("$Routes.NUEVA_MINUTA?minutaId=$minutaId")
     }
 
     fun agregarMinuta(titulo: String, fecha: String, diasRecetas: Map<String, String>) {
@@ -40,6 +44,11 @@ class ListadoMinutasViewModel(val navController: NavController) : ViewModel() {
     fun eliminarMinuta(idMinuta: Int) {
         val nuevaLista = _minutas.value?.filter { it.id != idMinuta }
         _minutas.value = nuevaLista as MutableList<NuevaMinutaModel>?
+    }
+
+    fun editarMinuta() {
+
+
     }
 
 }

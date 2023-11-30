@@ -114,15 +114,36 @@ fun MinutaItem(
                 fontSize = 16.sp,
                 fontFamily = Fuentes.REM_BOLD
             )
-            IconButton(onClick = {listadoMinutasVM.eliminarMinuta(minutaM.id)}) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_delete),
-                    contentDescription = "delete",
-                    tint = Colores.BLANCO,
-                    modifier = Modifier
-                        .size(54.dp)
-                )
+
+            // iconos de editar y eliminar
+            Row {
+                // boton de eliminar
+                IconButton(onClick = { listadoMinutasVM.eliminarMinuta(minutaM.id) }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_delete),
+                        contentDescription = "delete",
+                        tint = Colores.BLANCO,
+                        modifier = Modifier
+                            .size(54.dp)
+                    )
+                }
+
+                // boton de editar
+                IconButton(onClick = {
+                    listadoMinutasVM.navegarEditarMinuta(minutaM.id)
+
+                }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_edit),
+                        contentDescription = "delete",
+                        tint = Colores.BLANCO,
+                        modifier = Modifier
+                            .size(54.dp)
+                    )
+                }
             }
+
+
         }
 
         Spacer(modifier = Modifier.padding(8.dp))
@@ -165,7 +186,7 @@ fun BotonAgregarMinuta(
         containerColor = Colores.ROJO,
         contentColor = Colores.BLANCO,
         modifier = modifier.padding(16.dp),
-        onClick = { listadoMinutasVM.navigateTo(Routes.NUEVA_MINUTA) }
+        onClick = { listadoMinutasVM.navegarCrearNuevaMinuta() }
     ) {
         Icon(Icons.Default.Add, contentDescription = "Add")
     }

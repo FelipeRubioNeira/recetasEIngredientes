@@ -33,16 +33,15 @@ class NuevaMinutaViewModel(
     @RequiresApi(Build.VERSION_CODES.O)
     val fechaMinuta = _fechaMinuta
 
-    private val _modalRecetasVisible = MutableLiveData<Boolean>()
-    val modalRecetasVisible = _modalRecetasVisible
-
-    private val _diaSeleccionado = MutableLiveData<String>()
-
     // valores seleccionados para cada dia
     private val _diasRecetas = MutableLiveData(mapOf<String, String>())
     val diasRecetas = _diasRecetas
 
+    // dia seleccionado en el selector desplegable
+    private val _diaSeleccionado = MutableLiveData<String>()
 
+    private val _modalRecetasVisible = MutableLiveData<Boolean>()
+    val modalRecetasVisible = _modalRecetasVisible
 
     // ------------------------------ fin de las variables -----------------------------------------
 
@@ -53,6 +52,7 @@ class NuevaMinutaViewModel(
     fun setTituloMinuta(titulo: String) {
         _tituloMinuta.value = titulo
     }
+
     fun mostrarModalRecetas(nombreDia: String) {
 
         // guardar el nombre del dia seleccionado en el selector desplegable
@@ -77,19 +77,19 @@ class NuevaMinutaViewModel(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun agregarNuevaMinuta(){
+    fun agregarNuevaMinuta() {
 
         _listadoMinutasVM.agregarMinuta(
-            titulo = _tituloMinuta.value?: "",
+            titulo = _tituloMinuta.value ?: "",
             fecha = _fechaMinuta.value.toString(),
-            diasRecetas =_diasRecetas.value ?: mapOf()
+            diasRecetas = _diasRecetas.value ?: mapOf()
         )
 
         goBack()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun resetearFormulario(){
+    fun resetearFormulario() {
         _tituloMinuta.value = "Nueva minuta"
         _fechaMinuta.value = LocalDate.now()
         _diasRecetas.value = mapOf()

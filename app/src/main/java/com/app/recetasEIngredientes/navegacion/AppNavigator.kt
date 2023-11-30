@@ -3,9 +3,11 @@ package com.app.recetasEIngredientes.navegacion
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.app.recetasEIngredientes.createAccount.CreateAccountView
 import com.app.recetasEIngredientes.login.LoginView
 import com.app.recetasEIngredientes.mainMenu.MainMenuView
@@ -53,8 +55,15 @@ fun AppNavigator() {
         }
 
         // del menu principal podemos navegar a las minutas
-        composable(Routes.NUEVA_MINUTA) {
-            NuevaMinutaView(nuevaMinutasVM)
+        composable("$Routes.NUEVA_MINUTA?minutaId={minutaId}",
+            arguments = listOf(
+                navArgument("minutaId") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                }
+            )
+        ) {
+            NuevaMinutaView(nuevaMinutasVM, it.arguments?.getString("minutaId"))
         }
 
 

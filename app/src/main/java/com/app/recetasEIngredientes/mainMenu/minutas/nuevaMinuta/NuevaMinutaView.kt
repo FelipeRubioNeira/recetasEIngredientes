@@ -53,8 +53,14 @@ import com.app.recetasEIngredientes.mainMenu.minutas.ModalListadoRecetas
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NuevaMinutaView(nuevaMinutasVM: NuevaMinutaViewModel) {
+fun NuevaMinutaView(
+    nuevaMinutasVM: NuevaMinutaViewModel,
+    minutaId: String?,
+) {
 
+    LaunchedEffect(true){
+        Log.d("NuevaMinutaView", "minutaId: $minutaId")
+    }
 
     Scaffold(
         topBar = { TopBar(nuevaMinutasVM) },
@@ -100,7 +106,6 @@ fun Header(nuevaMinutasVM: NuevaMinutaViewModel) {
     // ------------------------------ variables locales ----------------------------------------------------
 
     val tituloMinuta: String by nuevaMinutasVM.tituloMinuta.observeAsState("Nueva minuta")
-
 
 
     // ------------------------------ efectos -----------------------------------------
