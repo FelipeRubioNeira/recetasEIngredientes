@@ -41,14 +41,32 @@ class ListadoMinutasViewModel(val navController: NavController) : ViewModel() {
         _minutas.value = listaActual
     }
 
+    fun editarMinuta(
+        idMinuta: Int,
+        titulo: String,
+        fecha: String,
+        diasRecetas: Map<String, String>
+    ) {
+
+        val minutaEditada = NuevaMinutaModel(
+            id = idMinuta,
+            titulo = titulo,
+            fecha = fecha,
+            dias = diasRecetas,
+        )
+
+        val indexElemento = _minutas.value?.indexOfFirst { it.id == idMinuta }
+
+        if(indexElemento != -1 && indexElemento != null){
+            _minutas.value?.set(indexElemento, minutaEditada)
+        }
+
+    }
+
     fun eliminarMinuta(idMinuta: Int) {
         val nuevaLista = _minutas.value?.filter { it.id != idMinuta }
         _minutas.value = nuevaLista as MutableList<NuevaMinutaModel>?
     }
 
-    fun editarMinuta() {
-
-
-    }
 
 }

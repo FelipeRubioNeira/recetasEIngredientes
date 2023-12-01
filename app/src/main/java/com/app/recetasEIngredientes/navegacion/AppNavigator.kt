@@ -58,12 +58,12 @@ fun AppNavigator() {
         composable("$Routes.NUEVA_MINUTA?minutaId={minutaId}",
             arguments = listOf(
                 navArgument("minutaId") {
-                    type = NavType.StringType
-                    defaultValue = ""
+                    type = NavType.IntType
+                    defaultValue = 0
                 }
             )
         ) {
-            NuevaMinutaView(nuevaMinutasVM, it.arguments?.getString("minutaId"))
+            NuevaMinutaView(nuevaMinutasVM, it.arguments?.getInt("minutaId"))
         }
 
 

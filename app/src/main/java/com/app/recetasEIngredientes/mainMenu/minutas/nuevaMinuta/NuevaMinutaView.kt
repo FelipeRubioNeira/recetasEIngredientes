@@ -42,7 +42,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.app.recetasEIngredientes.R
 import com.app.recetasEIngredientes.constantes.Colores
 import com.app.recetasEIngredientes.constantes.Fuentes
@@ -55,15 +54,30 @@ import com.app.recetasEIngredientes.mainMenu.minutas.ModalListadoRecetas
 @Composable
 fun NuevaMinutaView(
     nuevaMinutasVM: NuevaMinutaViewModel,
-    minutaId: String?,
+    minutaId: Int?,
 ) {
 
-    LaunchedEffect(true){
-        Log.d("NuevaMinutaView", "minutaId: $minutaId")
+
+    // ------------------------------ variables locales ----------------------------------------------------
+
+    val tituloPantalla: String by nuevaMinutasVM.tituloPantalla.observeAsState("Nueva minuta")
+
+
+
+    // ------------------------------ efectos -----------------------------------------
+
+    // es un effecto que se ejecuta la primera vez que se renderiza el componente
+    LaunchedEffect(key1 = minutaId) {
+        nuevaMinutasVM.resetearFormulario()
+        nuevaMinutasVM.cargarMinuta(minutaId?: 0)
     }
 
+
+    // ------------------------------ composables -----------------------------------------
+
+
     Scaffold(
-        topBar = { TopBar(nuevaMinutasVM) },
+        topBar = { TopBar(nuevaMinutasVM, tituloPantalla) },
     ) { innerPadding ->
 
         Box(
@@ -86,7 +100,7 @@ fun NuevaMinutaView(
 
                 Spacer(modifier = Modifier.size(16.dp))
 
-                Footer(nuevaMinutasVM)
+                Footer(nuevaMinutasVM, minutaId?: 0)
 
             }
 
@@ -103,20 +117,8 @@ fun NuevaMinutaView(
 @Composable
 fun Header(nuevaMinutasVM: NuevaMinutaViewModel) {
 
-    // ------------------------------ variables locales ----------------------------------------------------
-
     val tituloMinuta: String by nuevaMinutasVM.tituloMinuta.observeAsState("Nueva minuta")
 
-
-    // ------------------------------ efectos -----------------------------------------
-
-    // es un effecto que se ejecuta la primera vez que se renderiza el componente
-    LaunchedEffect(key1 = true) {
-        nuevaMinutasVM.resetearFormulario()
-    }
-
-
-    // ------------------------------ composables -----------------------------------------
 
     Column {
         Row(
@@ -191,10 +193,13 @@ fun Body(nuevaMinutasVM: NuevaMinutaViewModel) {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun Footer(nuevaMinutasVM: NuevaMinutaViewModel) {
+fun Footer(nuevaMinutasVM: NuevaMinutaViewModel, minutaIdParse: Int) {
 
 
-    Row() {
+    val esNuevaMinuta: Boolean by nuevaMinutasVM.esNuevaMinuta.observeAsState(true)
+
+
+    Row {
 
         BotonCancelar(
             "Cancelar",
@@ -204,13 +209,16 @@ fun Footer(nuevaMinutasVM: NuevaMinutaViewModel) {
 
         Spacer(modifier = Modifier.size(16.dp))
 
+
         BotonAceptar(
-            "Guardar",
+            text = if (esNuevaMinuta) "Guardar" else "Editar",
             onClick = {
-                nuevaMinutasVM.agregarNuevaMinuta()
+                if (esNuevaMinuta) nuevaMinutasVM.agregarNuevaMinuta()
+                else nuevaMinutasVM.editarMinuta(minutaIdParse)
             },
             modifier = Modifier.weight(1f)
         )
+
     }
 
 }
@@ -339,10 +347,10 @@ fun PlaceholderApp(value: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(nuevaMinutasVM: NuevaMinutaViewModel) {
+fun TopBar(nuevaMinutasVM: NuevaMinutaViewModel, tituloPantalla: String) {
 
     TopAppBar(
-        title = { Titulo("Nueva minuta") },
+        title = { Titulo(tituloPantalla) },
         navigationIcon = { IconoGoBack(nuevaMinutasVM) },
         colors = TopAppBarDefaults.smallTopAppBarColors(
             containerColor = Colores.ROJO,

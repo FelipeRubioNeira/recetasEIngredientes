@@ -22,8 +22,11 @@ class NuevaMinutaViewModel(
 
     // ------------------------------ variables locales ----------------------------------------------------
 
+    private val _tituloPantalla = MutableLiveData<String> ()
+    val tituloPantalla = _tituloPantalla
+
     // titulo de la minuta
-    private val _tituloMinuta = MutableLiveData("Nueva minuta")
+    private val _tituloMinuta = MutableLiveData<String>()
     val tituloMinuta = _tituloMinuta
 
     // fecha de la minuta
@@ -42,6 +45,9 @@ class NuevaMinutaViewModel(
 
     private val _modalRecetasVisible = MutableLiveData<Boolean>()
     val modalRecetasVisible = _modalRecetasVisible
+
+    private val _esNuevaMinuta = MutableLiveData<Boolean>()
+    val esNuevaMinuta = _esNuevaMinuta
 
     // ------------------------------ fin de las variables -----------------------------------------
 
@@ -89,10 +95,43 @@ class NuevaMinutaViewModel(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
+    fun editarMinuta(minutaId: Int) {
+
+        _listadoMinutasVM.editarMinuta(
+            idMinuta = minutaId,
+            titulo = _tituloMinuta.value ?: "",
+            fecha = _fechaMinuta.value.toString(),
+            diasRecetas = _diasRecetas.value ?: mapOf()
+        )
+
+        goBack()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
     fun resetearFormulario() {
+        _tituloPantalla.value = "Nueva minuta"
         _tituloMinuta.value = "Nueva minuta"
         _fechaMinuta.value = LocalDate.now()
         _diasRecetas.value = mapOf()
+        _esNuevaMinuta.value = true
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun cargarMinuta(minutaId: Int) {
+
+        if (minutaId == 0) return
+
+        val minutaEncontrada = _listadoMinutasVM.minutas.value?.find { it.id == minutaId }
+
+        if (minutaEncontrada != null) {
+            _tituloPantalla.value = "Editar minuta"
+            _tituloMinuta.value = minutaEncontrada.titulo
+            _fechaMinuta.value = LocalDate.parse(minutaEncontrada.fecha)
+            _diasRecetas.value = minutaEncontrada.dias
+        }
+
+        _esNuevaMinuta.value = false
+
     }
 
 }
