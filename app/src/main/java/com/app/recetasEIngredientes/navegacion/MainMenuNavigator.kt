@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import com.app.recetasEIngredientes.mainMenu.minutas.listadoMinutas.ListadoMinutasView
 import com.app.recetasEIngredientes.mainMenu.minutas.listadoMinutas.ListadoMinutasViewModel
 import com.app.recetasEIngredientes.mainMenu.perfil.PerfilView
-import com.app.recetasEIngredientes.mainMenu.recetas.RecetasView
+import com.app.recetasEIngredientes.mainMenu.recetas.ListadoRecetasView
 import com.app.recetasEIngredientes.navegacion.Routes
 
 @Composable
@@ -26,7 +26,7 @@ fun MainMenuNavigator(
         }
 
         composable(route = Routes.RECETAS) {
-            RecetasView()
+            ListadoRecetasView()
         }
         composable(route = Routes.PERFIL) {
             PerfilView()

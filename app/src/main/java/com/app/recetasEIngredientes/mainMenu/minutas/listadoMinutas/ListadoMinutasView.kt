@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,6 +36,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.app.recetasEIngredientes.R
+import com.app.recetasEIngredientes.common.componentes.BotonAgregar
 import com.app.recetasEIngredientes.constantes.Colores
 import com.app.recetasEIngredientes.constantes.Fuentes
 import com.app.recetasEIngredientes.mainMenu.minutas.nuevaMinuta.NuevaMinutaModel
@@ -49,16 +51,16 @@ fun ListadoMinutasView(listadoMinutasVM: ListadoMinutasViewModel) {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(16.dp)
+        //.padding(16.dp)
     ) {
-
 
         ListadoMinutas(listadoMinutasVM)
 
-        BotonAgregarMinuta(
-            listadoMinutasVM,
-            Modifier.align(alignment = BottomEnd)
-        )
+        BotonAgregar(
+            modifier = Modifier.align(alignment = BottomEnd),
+            color = Colores.ROJO,
+            onPress = { listadoMinutasVM.navegarCrearNuevaMinuta() }
+        ) // BotonAgregar
     }
 }
 
@@ -68,13 +70,17 @@ fun ListadoMinutas(listadoMinutasVM: ListadoMinutasViewModel) {
     val listadoMinutas: List<NuevaMinutaModel> by listadoMinutasVM.minutas.observeAsState(emptyList())
 
     LazyColumn(
+
         content = {
             items(listadoMinutas.size) { index ->
                 val nuevoItem = listadoMinutas[index] // value del item de tipo NuevaMinutaModel
                 MinutaItem(nuevoItem, listadoMinutasVM)
                 Spacer(modifier = Modifier.padding(4.dp))
             }
-        }
+        },
+
+        contentPadding = PaddingValues(16.dp)
+
     )
 
 }
