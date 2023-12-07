@@ -14,6 +14,7 @@ import com.app.recetasEIngredientes.mainMenu.MainMenuView
 import com.app.recetasEIngredientes.mainMenu.minutas.listadoMinutas.ListadoMinutasViewModel
 import com.app.recetasEIngredientes.mainMenu.minutas.nuevaMinuta.NuevaMinutaView
 import com.app.recetasEIngredientes.mainMenu.minutas.nuevaMinuta.NuevaMinutaViewModel
+import com.app.recetasEIngredientes.mainMenu.recetas.ListadoRecetasViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -29,6 +30,8 @@ fun AppNavigator() {
         navControllerPrincipal,
         listadoMinutasVM,
     )
+
+    val listadoRecetasVM = ListadoRecetasViewModel()
 
 
     NavHost(
@@ -51,6 +54,7 @@ fun AppNavigator() {
             MainMenuView(
                 navControllerPrincipal,
                 listadoMinutasVM,
+                listadoRecetasVM
             )
         }
 

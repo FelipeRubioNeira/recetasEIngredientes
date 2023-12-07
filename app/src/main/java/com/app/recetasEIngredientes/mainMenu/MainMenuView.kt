@@ -33,6 +33,7 @@ import androidx.navigation.compose.rememberNavController
 import com.app.recetasEIngredientes.constantes.Colores
 import com.app.recetasEIngredientes.constantes.Fuentes
 import com.app.recetasEIngredientes.mainMenu.minutas.listadoMinutas.ListadoMinutasViewModel
+import com.app.recetasEIngredientes.mainMenu.recetas.ListadoRecetasViewModel
 
 /*
 * NAV CONTROLLER PRINCIPAL SE ENCARGA DE NAVEGAR EN EL STACK
@@ -43,6 +44,7 @@ import com.app.recetasEIngredientes.mainMenu.minutas.listadoMinutas.ListadoMinut
 fun MainMenuView(
     navControllerStack: NavController,
     listadoMinutasVM: ListadoMinutasViewModel,
+    listadoRecetasVM: ListadoRecetasViewModel,
 ) {
 
     //  controller del menu de los iconos de abajo
@@ -69,6 +71,7 @@ fun MainMenuView(
             MainMenuNavigator(
                 navControllerBotom,
                 listadoMinutasVM,
+                listadoRecetasVM
             )
         }
 

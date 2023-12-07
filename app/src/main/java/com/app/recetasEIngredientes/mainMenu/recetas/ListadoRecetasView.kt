@@ -22,6 +22,7 @@ import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -41,7 +42,9 @@ import com.app.recetasEIngredientes.constantes.Colores
 import com.app.recetasEIngredientes.constantes.Fuentes
 
 @Composable
-fun ListadoRecetasView() {
+fun ListadoRecetasView(listadoRecetasVM: ListadoRecetasViewModel) {
+
+    val modalVisible: Boolean by listadoRecetasVM.modalVisible.observeAsState(false)
 
     Box(
         modifier = Modifier
@@ -57,8 +60,16 @@ fun ListadoRecetasView() {
         BotonAgregar(
             modifier = Modifier.align(alignment = Alignment.BottomEnd),
             color = Colores.AZUL,
-            onPress = { }
+            onPress = { listadoRecetasVM.mostrarModal() }
         )
+    }
+
+    Modal(
+        title = "Listado ingredientes",
+        modalVisible = modalVisible,
+        cerrarModal = { listadoRecetasVM.cerrarModal() }
+    ) {
+        //TODO BODY DEL MODAL
     }
 
 
@@ -80,7 +91,10 @@ fun Buscador() {
     ) {
         Busqueda(Modifier.weight(9f))
         Spacer(modifier = Modifier.width(8.dp))
-        Filtro(Modifier.weight(1f))
+        Filtro(
+            onPress = { /*TODO mostrar modal de opciones*/ },
+            Modifier.weight(1f)
+        )
     }
 }
 
@@ -136,11 +150,14 @@ fun Busqueda(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun Filtro(modifier: Modifier = Modifier) {
+fun Filtro(
+    onPress: () -> Unit,
+    modifier: Modifier = Modifier
+) {
 
     IconButton(
         modifier = modifier,
-        onClick = { }
+        onClick = onPress
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_tune),

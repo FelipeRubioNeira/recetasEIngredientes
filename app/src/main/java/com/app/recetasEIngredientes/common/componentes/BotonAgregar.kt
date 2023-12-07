@@ -14,7 +14,7 @@ import com.app.recetasEIngredientes.mainMenu.minutas.listadoMinutas.ListadoMinut
 
 @Composable
 fun BotonAgregar(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     color: Color,
     onPress: () -> Unit
 ) {

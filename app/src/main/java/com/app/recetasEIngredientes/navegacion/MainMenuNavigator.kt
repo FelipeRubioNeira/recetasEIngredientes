@@ -7,12 +7,14 @@ import com.app.recetasEIngredientes.mainMenu.minutas.listadoMinutas.ListadoMinut
 import com.app.recetasEIngredientes.mainMenu.minutas.listadoMinutas.ListadoMinutasViewModel
 import com.app.recetasEIngredientes.mainMenu.perfil.PerfilView
 import com.app.recetasEIngredientes.mainMenu.recetas.ListadoRecetasView
+import com.app.recetasEIngredientes.mainMenu.recetas.ListadoRecetasViewModel
 import com.app.recetasEIngredientes.navegacion.Routes
 
 @Composable
 fun MainMenuNavigator(
     navControllerMenu: NavHostController,
     listadoMinutasVM: ListadoMinutasViewModel,
+    listadoRecetasVM: ListadoRecetasViewModel
 ) {
 
 
@@ -26,7 +28,7 @@ fun MainMenuNavigator(
         }
 
         composable(route = Routes.RECETAS) {
-            ListadoRecetasView()
+            ListadoRecetasView(listadoRecetasVM)
         }
         composable(route = Routes.PERFIL) {
             PerfilView()

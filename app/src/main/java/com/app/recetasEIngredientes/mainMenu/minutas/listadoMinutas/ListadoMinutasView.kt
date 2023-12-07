@@ -46,7 +46,6 @@ import com.app.recetasEIngredientes.navegacion.Routes
 @Composable
 fun ListadoMinutasView(listadoMinutasVM: ListadoMinutasViewModel) {
 
-
     Box(
         modifier = Modifier
             .fillMaxSize()
