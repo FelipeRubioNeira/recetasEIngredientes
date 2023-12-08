@@ -1,7 +1,6 @@
 package com.app.recetasEIngredientes.mainMenu
 
 import MainMenuNavigator
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -33,7 +32,7 @@ import androidx.navigation.compose.rememberNavController
 import com.app.recetasEIngredientes.constantes.Colores
 import com.app.recetasEIngredientes.constantes.Fuentes
 import com.app.recetasEIngredientes.mainMenu.minutas.listadoMinutas.ListadoMinutasViewModel
-import com.app.recetasEIngredientes.mainMenu.recetas.ListadoRecetasViewModel
+import com.app.recetasEIngredientes.mainMenu.recetas.listadoRecetas.ListadoRecetasViewModel
 
 /*
 * NAV CONTROLLER PRINCIPAL SE ENCARGA DE NAVEGAR EN EL STACK

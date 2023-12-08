@@ -15,6 +15,10 @@ object Routes {
     val LISTADO_MINUTAS = "ListadoMinutas"
     val NUEVA_MINUTA = "NuevaMinuta"
 
-    val RECETAS = "Recetas"
+    // stack de recetas
+    val LISTADO_RECETAS = "ListadoRecetas"
+    val NUEVA_RECETA = "NuevaReceta"
+
+    // stack de perfil
     val PERFIL = "Perfil"
 }

@@ -29,7 +29,6 @@ import com.app.recetasEIngredientes.R
 import com.app.recetasEIngredientes.constantes.Colores
 import com.app.recetasEIngredientes.constantes.Fuentes
 
-@Preview(showBackground = true)
 @Composable
 fun Modal(
     title: String = "Modal",

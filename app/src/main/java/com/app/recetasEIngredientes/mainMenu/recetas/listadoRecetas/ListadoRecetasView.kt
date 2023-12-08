@@ -1,8 +1,6 @@
-package com.app.recetasEIngredientes.mainMenu.recetas
+package com.app.recetasEIngredientes.mainMenu.recetas.listadoRecetas
 
-import android.widget.Space
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -13,10 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
@@ -29,9 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,6 +34,8 @@ import com.app.recetasEIngredientes.R
 import com.app.recetasEIngredientes.common.componentes.BotonAgregar
 import com.app.recetasEIngredientes.constantes.Colores
 import com.app.recetasEIngredientes.constantes.Fuentes
+import com.app.recetasEIngredientes.mainMenu.recetas.Modal
+import com.app.recetasEIngredientes.navegacion.Routes
 
 @Composable
 fun ListadoRecetasView(listadoRecetasVM: ListadoRecetasViewModel) {
@@ -50,20 +46,21 @@ fun ListadoRecetasView(listadoRecetasVM: ListadoRecetasViewModel) {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(16.dp)
+            .padding(top = 16.dp)
     ) {
 
-        Buscador()
+        Buscador(listadoRecetasVM)
 
         ListadoRecetas()
 
         BotonAgregar(
             modifier = Modifier.align(alignment = Alignment.BottomEnd),
-            color = Colores.AZUL,
-            onPress = { listadoRecetasVM.mostrarModal() }
+            color = Colores.ROJO,
+            onPress = { listadoRecetasVM.navigateTo(Routes.NUEVA_RECETA) }
         )
     }
 
+    // modal para aplicar filtros
     Modal(
         title = "Listado ingredientes",
         modalVisible = modalVisible,
@@ -82,27 +79,32 @@ fun ListadoRecetas() {
 }
 
 @Composable
-fun Buscador() {
+fun Buscador(listadoRecetasVM: ListadoRecetasViewModel) {
 
     Row(
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
+            .padding(horizontal = 16.dp)
     ) {
-        Busqueda(Modifier.weight(9f))
+        //Spacer(modifier = Modifier.width(86.dp).background(Color.Red))
+        Busqueda(listadoRecetasVM, Modifier.weight(9f))
         Spacer(modifier = Modifier.width(8.dp))
         Filtro(
-            onPress = { /*TODO mostrar modal de opciones*/ },
+            onPress = { listadoRecetasVM.mostrarModal() },
             Modifier.weight(1f)
         )
     }
 }
 
-@Preview
 @Composable
-fun Busqueda(modifier: Modifier = Modifier) {
+fun Busqueda(
+    listadoRecetasVM: ListadoRecetasViewModel,
+    modifier: Modifier = Modifier
+) {
 
-    var value by rememberSaveable { mutableStateOf("") }
+    val valueBusquedaRecetas: String by listadoRecetasVM.valueBusquedaRecetas.observeAsState("")
 
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -113,8 +115,8 @@ fun Busqueda(modifier: Modifier = Modifier) {
     ) {
 
         TextField(
-            value = value,
-            onValueChange = { value = it },
+            value = valueBusquedaRecetas,
+            onValueChange = { listadoRecetasVM.actualizarValueBusquedaRecetas(it) },
             textStyle = TextStyle(
                 fontFamily = Fuentes.REM_LIGHT,
                 color = Colores.NEGRO,

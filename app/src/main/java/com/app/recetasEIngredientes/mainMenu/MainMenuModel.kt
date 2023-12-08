@@ -31,7 +31,7 @@ sealed class MenuItem(
 
     object Recetas : MenuItem(
         name = "Recetas",
-        route = Routes.RECETAS,
+        route = Routes.LISTADO_RECETAS,
         iconSelected = R.drawable.ic_restaurant_selected,
         iconUnselected = R.drawable.ic_restaurant
     )
