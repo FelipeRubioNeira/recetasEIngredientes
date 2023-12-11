@@ -43,9 +43,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.app.recetasEIngredientes.R
+import com.app.recetasEIngredientes.common.componentes.TopBarApp
 import com.app.recetasEIngredientes.constantes.Colores
 import com.app.recetasEIngredientes.constantes.Fuentes
-import com.app.recetasEIngredientes.mainMenu.Titulo
 import com.app.recetasEIngredientes.mainMenu.minutas.ModalListadoRecetas
 
 
@@ -63,13 +63,12 @@ fun NuevaMinutaView(
     val tituloPantalla: String by nuevaMinutasVM.tituloPantalla.observeAsState("Nueva minuta")
 
 
-
     // ------------------------------ efectos -----------------------------------------
 
     // es un effecto que se ejecuta la primera vez que se renderiza el componente
     LaunchedEffect(key1 = minutaId) {
         nuevaMinutasVM.resetearFormulario()
-        nuevaMinutasVM.cargarMinuta(minutaId?: 0)
+        nuevaMinutasVM.cargarMinuta(minutaId ?: 0)
     }
 
 
@@ -77,7 +76,12 @@ fun NuevaMinutaView(
 
 
     Scaffold(
-        topBar = { TopBar(nuevaMinutasVM, tituloPantalla) },
+        topBar = {
+            TopBarApp(
+                tituloPantalla,
+                goBack = { nuevaMinutasVM.goBack() }
+            )
+        },
     ) { innerPadding ->
 
         Box(
@@ -100,7 +104,7 @@ fun NuevaMinutaView(
 
                 Spacer(modifier = Modifier.size(16.dp))
 
-                Footer(nuevaMinutasVM, minutaId?: 0)
+                Footer(nuevaMinutasVM, minutaId ?: 0)
 
             }
 
@@ -345,31 +349,3 @@ fun PlaceholderApp(value: String) {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TopBar(nuevaMinutasVM: NuevaMinutaViewModel, tituloPantalla: String) {
-
-    TopAppBar(
-        title = { Titulo(tituloPantalla) },
-        navigationIcon = { IconoGoBack(nuevaMinutasVM) },
-        colors = TopAppBarDefaults.smallTopAppBarColors(
-            containerColor = Colores.ROJO,
-            titleContentColor = Colores.BLANCO,
-        )
-    )
-}
-
-@Composable
-fun IconoGoBack(nuevaMinutasVM: NuevaMinutaViewModel) {
-
-    IconButton(
-        modifier = Modifier,
-        onClick = { nuevaMinutasVM.goBack() }
-    ) {
-        Icon(
-            imageVector = Icons.Default.ArrowBack,
-            contentDescription = "back",
-            tint = Colores.BLANCO
-        )
-    }
-}

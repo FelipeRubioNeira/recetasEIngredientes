@@ -29,6 +29,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.app.recetasEIngredientes.common.componentes.TopBarApp
 import com.app.recetasEIngredientes.constantes.Colores
 import com.app.recetasEIngredientes.constantes.Fuentes
 import com.app.recetasEIngredientes.mainMenu.minutas.listadoMinutas.ListadoMinutasViewModel
@@ -52,7 +53,11 @@ fun MainMenuView(
 
     Scaffold(
 
-        topBar = { TopBar(mainMenuViewModel) },
+        topBar = {
+            TopBarApp(
+                titulo = "Bienvenido",
+            )
+        },
         bottomBar = {
             ButtonNavigationBar(
                 mainMenuViewModel,
@@ -76,46 +81,6 @@ fun MainMenuView(
 
     }
 
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TopBar(mainMenuViewModel: MainMenuViewModel) {
-
-    TopAppBar(
-        title = { Titulo("Bienvenido") },
-        navigationIcon = {
-            IconoGoBack(mainMenuViewModel)
-        },
-        colors = TopAppBarDefaults.smallTopAppBarColors(
-            containerColor = Colores.ROJO,
-            titleContentColor = Colores.BLANCO,
-        )
-    )
-}
-
-@Composable
-fun IconoGoBack(mainMenuViewModel: MainMenuViewModel) {
-
-    IconButton(
-        modifier = Modifier,
-        onClick = { mainMenuViewModel.goBack() }
-    ) {
-        Icon(
-            imageVector = Icons.Default.ArrowBack,
-            contentDescription = "back",
-            tint = Colores.BLANCO
-        )
-    }
-}
-
-@Composable
-fun Titulo(titulo: String = "") {
-    Text(
-        text = titulo,
-        textAlign = TextAlign.Center,
-        fontFamily = Fuentes.REM_MEDIUM
-    )
 }
 
 @Composable

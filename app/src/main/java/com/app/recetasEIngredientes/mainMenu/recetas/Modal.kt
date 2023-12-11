@@ -126,7 +126,10 @@ fun BotonAceptar(onPress: () -> Unit = {}) {
             .background(Colores.ROJO)
 
     ) {
-        TextButton(onClick = onPress) {
+        TextButton(
+            onClick = onPress,
+            modifier = Modifier.fillMaxSize()
+        ) {
             Text(
                 text = "Aceptar",
                 fontFamily = Fuentes.REM_MEDIUM,

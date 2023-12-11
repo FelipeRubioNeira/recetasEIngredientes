@@ -50,7 +50,6 @@ fun ListadoMinutasView(listadoMinutasVM: ListadoMinutasViewModel) {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-        //.padding(16.dp)
     ) {
 
         ListadoMinutas(listadoMinutasVM)
