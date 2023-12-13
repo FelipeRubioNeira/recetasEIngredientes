@@ -107,6 +107,7 @@ fun Body(modifier: Modifier, body: @Composable () -> Unit) {
         contentAlignment = Alignment.Center,
         modifier = modifier
             .fillMaxSize()
+            .background(Colores.BLANCO)
             .padding(horizontal = 16.dp)
     ) {
         body()

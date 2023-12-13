@@ -16,6 +16,7 @@ import com.app.recetasEIngredientes.mainMenu.minutas.nuevaMinuta.NuevaMinutaView
 import com.app.recetasEIngredientes.mainMenu.minutas.nuevaMinuta.NuevaMinutaViewModel
 import com.app.recetasEIngredientes.mainMenu.recetas.listadoRecetas.ListadoRecetasViewModel
 import com.app.recetasEIngredientes.mainMenu.recetas.nuevaReceta.NuevaReceta
+import com.app.recetasEIngredientes.mainMenu.recetas.nuevaReceta.NuevaRecetaViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -33,6 +34,10 @@ fun AppNavigator() {
     )
 
     val listadoRecetasVM = ListadoRecetasViewModel(navControllerPrincipal)
+
+    val nuevaRecetaVM = NuevaRecetaViewModel(
+        navControllerPrincipal,
+    )
 
 
     NavHost(
@@ -73,7 +78,7 @@ fun AppNavigator() {
 
         // nueva receta
         composable(Routes.NUEVA_RECETA) {
-            NuevaReceta()
+            NuevaReceta(nuevaRecetaVM)
         }
 
 

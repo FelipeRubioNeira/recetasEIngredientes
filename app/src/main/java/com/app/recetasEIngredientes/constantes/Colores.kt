@@ -13,7 +13,7 @@ object Colores {
     val TRANSPARENTE_OSCURO = Color(0x40000000)
 
     val AZUL = Color(0xFF1F2D7A)
-    val BLANCO = Color(0xFFF7F7F7)
+    val BLANCO = Color(0xFFFFFFFF)
     val NEGRO = Color(0xFF181818)
     val NARANJO = Color(0xFFFF9800)
     val ARANDANO = Color(0xFF2F1A55)
