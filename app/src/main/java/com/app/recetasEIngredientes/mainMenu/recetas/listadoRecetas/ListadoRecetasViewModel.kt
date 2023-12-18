@@ -12,7 +12,8 @@ class ListadoRecetasViewModel(val navegadorPrincipal: NavController) : ViewModel
     // importamos el model
     val listadoRecetasModel = ListadoRecetasModel()
 
-    private val _listadoRecetas = MutableLiveData(listOf<Receta>())
+    private val _listadoRecetasOriginal = MutableLiveData(listOf<Receta>())
+    private val _listadoRecetas = MutableLiveData(mutableListOf<Receta>())
     val listadoRecetas = _listadoRecetas
 
     // --------------------- variables de clase  ---------------------
@@ -26,8 +27,24 @@ class ListadoRecetasViewModel(val navegadorPrincipal: NavController) : ViewModel
 
     // --------------------- funciones publicas ---------------------
 
-    fun actualizarValueBusquedaRecetas(nuevoValor: String) {
-        _valueBusquedaRecetas.value = nuevoValor
+
+    fun buscarReceta(valorBusqueda: String) {
+
+        // 1- actualizar el valor de la variable de clase
+        _valueBusquedaRecetas.value = valorBusqueda
+
+        // 2- filtrar el listado de recetas
+        if (valorBusqueda.isEmpty()) {
+            _listadoRecetas.value = _listadoRecetasOriginal.value?.toMutableList()
+
+        } else {
+            _listadoRecetas.value = _listadoRecetasOriginal.value?.filter {
+                it.nombre.contains(valorBusqueda, ignoreCase = true)
+                        || it.descripcion.contains(valorBusqueda, ignoreCase = true)
+            }?.toMutableList()
+
+        }
+
     }
 
     fun mostrarModal() {
@@ -42,8 +59,9 @@ class ListadoRecetasViewModel(val navegadorPrincipal: NavController) : ViewModel
         navegadorPrincipal.navigate(ruta)
     }
 
-    fun obtenerListadoRecetas(){
-        listadoRecetas.value = listadoRecetasModel.obtenerRecetas()
+    fun obtenerListadoRecetas() {
+        _listadoRecetasOriginal.value = listadoRecetasModel.obtenerRecetas()
+        _listadoRecetas.value = listadoRecetasModel.obtenerRecetas().toMutableList()
     }
 
 

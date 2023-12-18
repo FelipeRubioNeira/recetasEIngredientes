@@ -190,14 +190,14 @@ fun Busqueda(
 
         TextField(
             value = valueBusquedaRecetas,
-            onValueChange = { listadoRecetasVM.actualizarValueBusquedaRecetas(it) },
+            onValueChange = { listadoRecetasVM.buscarReceta(it) },
             textStyle = TextStyle(
                 fontFamily = Fuentes.REM_LIGHT,
                 color = Colores.NEGRO,
                 fontSize = 16.sp
             ),
             label = null,
-            singleLine = true,
+            maxLines = 1,
             placeholder = { Text(text = "Buscar", fontFamily = Fuentes.REM_LIGHT) },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = Colores.ROJO,
@@ -205,7 +205,6 @@ fun Busqueda(
                 cursorColor = Colores.GRIS_OSCURO,
                 focusedLabelColor = Colores.GRIS_OSCURO,
             ),
-
             trailingIcon = {
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
@@ -218,7 +217,7 @@ fun Busqueda(
 
             },
 
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxSize(),
 
             )
     }
