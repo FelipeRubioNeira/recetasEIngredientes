@@ -37,6 +37,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.app.recetasEIngredientes.R
 import com.app.recetasEIngredientes.common.componentes.BotonAgregar
+import com.app.recetasEIngredientes.common.componentes.BotonEditar
+import com.app.recetasEIngredientes.common.componentes.BotonEliminar
 import com.app.recetasEIngredientes.constantes.Colores
 import com.app.recetasEIngredientes.constantes.Fuentes
 import com.app.recetasEIngredientes.mainMenu.minutas.nuevaMinuta.NuevaMinutaModel
@@ -122,29 +124,11 @@ fun MinutaItem(
             // iconos de editar y eliminar
             Row {
                 // boton de eliminar
-                IconButton(onClick = { listadoMinutasVM.eliminarMinuta(minutaM.id) }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_delete),
-                        contentDescription = "delete",
-                        tint = Colores.BLANCO,
-                        modifier = Modifier
-                            .size(54.dp)
-                    )
-                }
+                BotonEliminar(onClick = { listadoMinutasVM.eliminarMinuta(minutaM.id) })
 
                 // boton de editar
-                IconButton(onClick = {
-                    listadoMinutasVM.navegarEditarMinuta(minutaM.id)
+                BotonEditar(onClick = { listadoMinutasVM.navegarEditarMinuta(minutaM.id) })
 
-                }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_edit),
-                        contentDescription = "delete",
-                        tint = Colores.BLANCO,
-                        modifier = Modifier
-                            .size(54.dp)
-                    )
-                }
             }
 
 

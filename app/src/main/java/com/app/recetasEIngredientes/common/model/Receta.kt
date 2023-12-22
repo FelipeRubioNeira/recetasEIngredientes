@@ -1,4 +1,4 @@
-package com.app.recetasEIngredientes.mainMenu.recetas.listadoRecetas.model
+package com.app.recetasEIngredientes.common.model
 
 data class Receta(val id: Int, val nombre: String, val descripcion: String) {
 

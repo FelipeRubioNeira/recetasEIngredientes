@@ -1,5 +1,6 @@
 package com.app.recetasEIngredientes.mainMenu.recetas.listadoRecetas
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -12,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -24,37 +24,37 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.app.recetasEIngredientes.R
 import com.app.recetasEIngredientes.common.componentes.BotonAgregar
+import com.app.recetasEIngredientes.common.componentes.BotonEditar
+import com.app.recetasEIngredientes.common.componentes.BotonEliminar
 import com.app.recetasEIngredientes.constantes.Colores
 import com.app.recetasEIngredientes.constantes.Fuentes
 import com.app.recetasEIngredientes.mainMenu.recetas.Modal
-import com.app.recetasEIngredientes.mainMenu.recetas.listadoRecetas.model.Receta
+import com.app.recetasEIngredientes.common.model.Receta
 import com.app.recetasEIngredientes.navegacion.Routes
 
 @Composable
 fun ListadoRecetasView(listadoRecetasVM: ListadoRecetasViewModel) {
 
+    // --------------------- variables ---------------------
     val modalVisible: Boolean by listadoRecetasVM.modalVisible.observeAsState(false)
     val listadoRecetas: List<Receta> by listadoRecetasVM.listadoRecetas.observeAsState(listOf())
 
+    // --------------------- efectos ---------------------
     LaunchedEffect(true) {
         listadoRecetasVM.obtenerListadoRecetas()
     }
 
-
+    // --------------------- UI ---------------------
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -65,7 +65,7 @@ fun ListadoRecetasView(listadoRecetasVM: ListadoRecetasViewModel) {
         Column {
             Buscador(listadoRecetasVM)
             Spacer(modifier = Modifier.height(16.dp))
-            ListadoRecetas(listadoRecetas)
+            ListadoRecetas(listadoRecetas, listadoRecetasVM)
         }
 
         BotonAgregar(
@@ -88,7 +88,7 @@ fun ListadoRecetasView(listadoRecetasVM: ListadoRecetasViewModel) {
 }
 
 @Composable
-fun ListadoRecetas(listadoRecetas: List<Receta>) {
+fun ListadoRecetas(listadoRecetas: List<Receta>, listadoRecetasVM: ListadoRecetasViewModel) {
 
     LazyColumn(
         modifier = Modifier
@@ -97,7 +97,10 @@ fun ListadoRecetas(listadoRecetas: List<Receta>) {
     ) {
 
         items(listadoRecetas.size) { index ->
-            RecetaItem(receta = listadoRecetas[index])
+            RecetaItem(
+                receta = listadoRecetas[index],
+                listadoRecetasVM = listadoRecetasVM
+            )
         }
 
     }
@@ -105,7 +108,7 @@ fun ListadoRecetas(listadoRecetas: List<Receta>) {
 }
 
 @Composable
-fun RecetaItem(receta: Receta) {
+fun RecetaItem(receta: Receta, listadoRecetasVM: ListadoRecetasViewModel) {
 
     Column(
         modifier = Modifier
@@ -121,8 +124,10 @@ fun RecetaItem(receta: Receta) {
     ) {
 
         // header
-        Box(
-            contentAlignment = Alignment.CenterStart,
+        Row(
+            //contentAlignment = Alignment.CenterStart,
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(40.dp)
@@ -130,12 +135,19 @@ fun RecetaItem(receta: Receta) {
                 .padding(horizontal = 8.dp, vertical = 4.dp)
 
         ) {
+
             Text(
                 text = "#${receta.id} ${receta.nombre}",
                 color = Colores.BLANCO,
                 fontSize = 16.sp,
                 fontFamily = Fuentes.REM_BOLD
             )
+
+            Row {
+                BotonEliminar(onClick = { listadoRecetasVM.eliminarReceta(receta.id) })
+                BotonEditar(onClick = { listadoRecetasVM.editarReceta(receta.id) })
+            }
+
         }
 
         // body

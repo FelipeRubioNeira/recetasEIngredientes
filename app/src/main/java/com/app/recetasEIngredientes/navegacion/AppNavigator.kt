@@ -25,7 +25,7 @@ fun AppNavigator() {
 
     val navControllerPrincipal = rememberNavController()
 
-    // recive el nav controller principal para poder navegar entre las pantallas del stack
+    // recibe el nav controller principal para poder navegar entre las pantallas del stack
     val listadoMinutasVM = ListadoMinutasViewModel(navControllerPrincipal)
 
     val nuevaMinutasVM = NuevaMinutaViewModel(
@@ -37,6 +37,7 @@ fun AppNavigator() {
 
     val nuevaRecetaVM = NuevaRecetaViewModel(
         navControllerPrincipal,
+        listadoRecetasVM,
     )
 
 

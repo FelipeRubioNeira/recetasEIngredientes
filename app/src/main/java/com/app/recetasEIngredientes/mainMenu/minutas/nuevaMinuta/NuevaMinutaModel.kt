@@ -5,5 +5,4 @@ data class NuevaMinutaModel(
     val titulo: String,
     val fecha: String,
     val dias: Map<String, String>
-) {
-}
+)

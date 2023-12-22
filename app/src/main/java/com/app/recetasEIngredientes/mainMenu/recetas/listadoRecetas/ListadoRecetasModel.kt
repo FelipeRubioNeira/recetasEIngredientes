@@ -1,4 +1,6 @@
-package com.app.recetasEIngredientes.mainMenu.recetas.listadoRecetas.model
+package com.app.recetasEIngredientes.mainMenu.recetas.listadoRecetas
+
+import com.app.recetasEIngredientes.common.model.Receta
 
 class ListadoRecetasModel {
 
@@ -6,7 +8,7 @@ class ListadoRecetasModel {
         pero este metodo se encarga de buscar donde sea necesario la informacion*/
     fun obtenerRecetas(): List<Receta> {
 
-        val listadoRecetas = listOf<Receta>(
+        val listadoRecetas = listOf(
             Receta(1, "Cazuela de Vacuno", "Guiso tradicional con carne, verduras y maíz."),
             Receta(2, "Cazuela de Pollo", "Guiso tradicional con ave, verduras y papa."),
             Receta(3, "Empanadas de Pino", "Empanadas de carne molida, cebolla, huevo y aceituna."),

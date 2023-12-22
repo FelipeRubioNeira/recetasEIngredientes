@@ -24,8 +24,7 @@ class ListadoMinutasViewModel(val navController: NavController) : ViewModel() {
     fun agregarMinuta(titulo: String, fecha: String, diasRecetas: Map<String, String>) {
 
         val nuevaMinuta = NuevaMinutaModel(
-            id = (_minutas?.value?.size
-                ?: 0) + 1, // cuento cuantos elementos hay en la lista y le sumo 1
+            id = (_minutas.value?.size ?: 0) + 1, // cuento cuantos elementos hay en la lista y le sumo 1
             titulo = titulo,
             fecha = fecha,
             dias = diasRecetas,

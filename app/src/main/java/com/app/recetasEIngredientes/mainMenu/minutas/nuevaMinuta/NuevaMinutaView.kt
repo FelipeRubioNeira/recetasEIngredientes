@@ -123,7 +123,6 @@ fun Header(nuevaMinutasVM: NuevaMinutaViewModel) {
 
     val tituloMinuta: String by nuevaMinutasVM.tituloMinuta.observeAsState("Nueva minuta")
 
-
     Column {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
