@@ -71,7 +71,7 @@ fun ListadoRecetasView(listadoRecetasVM: ListadoRecetasViewModel) {
         BotonAgregar(
             modifier = Modifier.align(alignment = Alignment.BottomEnd),
             color = Colores.ROJO,
-            onPress = { listadoRecetasVM.navigateTo(Routes.NUEVA_RECETA) }
+            onPress = { listadoRecetasVM.navegarCrearReceta() }
         )
     }
 
@@ -145,7 +145,7 @@ fun RecetaItem(receta: Receta, listadoRecetasVM: ListadoRecetasViewModel) {
 
             Row {
                 BotonEliminar(onClick = { listadoRecetasVM.eliminarReceta(receta.id) })
-                BotonEditar(onClick = { listadoRecetasVM.editarReceta(receta.id) })
+                BotonEditar(onClick = { listadoRecetasVM.navegarEditarReceta(receta.id) })
             }
 
         }

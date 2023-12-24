@@ -59,13 +59,10 @@ fun NuevaMinutaView(
 
 
     // ------------------------------ variables locales ----------------------------------------------------
-
     val tituloPantalla: String by nuevaMinutasVM.tituloPantalla.observeAsState("Nueva minuta")
 
 
     // ------------------------------ efectos -----------------------------------------
-
-    // es un effecto que se ejecuta la primera vez que se renderiza el componente
     LaunchedEffect(key1 = minutaId) {
         nuevaMinutasVM.resetearFormulario()
         nuevaMinutasVM.cargarMinuta(minutaId ?: 0)
@@ -73,8 +70,6 @@ fun NuevaMinutaView(
 
 
     // ------------------------------ composables -----------------------------------------
-
-
     Scaffold(
         topBar = {
             TopBarApp(

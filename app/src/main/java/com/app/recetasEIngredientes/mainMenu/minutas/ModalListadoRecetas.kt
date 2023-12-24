@@ -29,15 +29,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.app.recetasEIngredientes.common.model.Receta
 import com.app.recetasEIngredientes.constantes.Colores
 import com.app.recetasEIngredientes.constantes.Fuentes
 import com.app.recetasEIngredientes.mainMenu.minutas.nuevaMinuta.NuevaMinutaViewModel
 
-@Composable
-fun ModalListadoRecetas(nuevaMinutaViewModel: NuevaMinutaViewModel) {
 
-    // variable para mostrar u ocultar el modal
-    val modalVisible: Boolean by nuevaMinutaViewModel.modalRecetasVisible.observeAsState(false)
+@Composable
+fun ModalListadoRecetas(nuevaMinutaVM: NuevaMinutaViewModel) {
+
+    // las acciones y el estilo dependen de nuevaMinutaVM
+    val modalVisible: Boolean by nuevaMinutaVM.modalRecetasVisible.observeAsState(false)
 
     // si modalVisible es false, no se muestra nada
     if (!modalVisible) return
@@ -64,8 +66,8 @@ fun ModalListadoRecetas(nuevaMinutaViewModel: NuevaMinutaViewModel) {
         ) {
 
             Column {
-                HeaderModal("Recetas", nuevaMinutaViewModel)
-                BodyModal(nuevaMinutaViewModel)
+                HeaderModal("Recetas", nuevaMinutaVM)
+                BodyModal(nuevaMinutaVM)
             }
 
         }
@@ -73,7 +75,7 @@ fun ModalListadoRecetas(nuevaMinutaViewModel: NuevaMinutaViewModel) {
 }
 
 @Composable
-fun HeaderModal(title: String, nuevaMinutaViewModel: NuevaMinutaViewModel) {
+fun HeaderModal(title: String, nuevaMinutaVM: NuevaMinutaViewModel) {
 
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -95,7 +97,7 @@ fun HeaderModal(title: String, nuevaMinutaViewModel: NuevaMinutaViewModel) {
         )
 
         // boton cerrar
-        IconButton(onClick = { nuevaMinutaViewModel.ocultarModalRecetas() }) {
+        IconButton(onClick = { nuevaMinutaVM.ocultarModalRecetas() }) {
             Icon(
                 imageVector = Icons.Default.Close,
                 tint = Colores.BLANCO,
@@ -110,23 +112,29 @@ fun HeaderModal(title: String, nuevaMinutaViewModel: NuevaMinutaViewModel) {
 
 
 @Composable
-fun BodyModal(nuevaMinutaViewModel: NuevaMinutaViewModel) {
+fun BodyModal(
+    nuevaMinutaVM: NuevaMinutaViewModel
+) {
 
     // listado de recetas provisorio
-    val ListaRecetas = listOf(
-        "Receta 1",
-        "Receta 2",
-        "Receta 3",
-        "Receta 4",
-        "Receta 5",
+    /*    val ListaRecetas = listOf(
+            "Receta 1",
+            "Receta 2",
+            "Receta 3",
+            "Receta 4",
+            "Receta 5",
+        )*/
+
+    val listadoRecetas: MutableList<Receta> by nuevaMinutaVM._listadoRecetasVM.listadoRecetas.observeAsState(
+        mutableListOf()
     )
 
     LazyColumn(
         content = {
-            items(ListaRecetas.size) { index ->
+            items(listadoRecetas.size) { index ->
                 RecetaItem(
-                    ListaRecetas[index],
-                    nuevaMinutaViewModel
+                    listadoRecetas[index].nombre, // le pasamos el nombre de la receta
+                    nuevaMinutaVM // le pasamos el view model
                 )
                 Divider(color = Colores.GRIS_TRANSPARENTE)
             }
@@ -138,7 +146,7 @@ fun BodyModal(nuevaMinutaViewModel: NuevaMinutaViewModel) {
 }
 
 @Composable
-fun RecetaItem(titulo: String, nuevaMinutaViewModel: NuevaMinutaViewModel) {
+fun RecetaItem(titulo: String, nuevaMinutaVM: NuevaMinutaViewModel) {
 
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -147,7 +155,7 @@ fun RecetaItem(titulo: String, nuevaMinutaViewModel: NuevaMinutaViewModel) {
             .height(42.dp)
     ) {
         TextButton(onClick = {
-            nuevaMinutaViewModel.seleccionarReceta(titulo)
+            nuevaMinutaVM.seleccionarReceta(titulo)
         }) {
             Text(
                 titulo,

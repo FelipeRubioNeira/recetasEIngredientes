@@ -1,24 +1,36 @@
 package com.app.recetasEIngredientes.navegacion
 
-object Routes {
+sealed class Routes(val ruta: String) {
 
-    // pantalla del login
-    val LOGIN = "Login"
-    val CREATE_ACCOUNT = "CreateAccount"
+
+    // pantallas del login
+    object Login : Routes("Login")
+
+    object CreateAccount : Routes("CreateAccount")
 
 
     // pantallas del menu prinicipal
-    val MENU_PRINCIPAL = "MenuPrincipal"
+    object MenuPrincipal : Routes("MainMenu")
 
     // rutas que son parte de minutas navigator
-    val MINUTAS_NAVIGATOR = "MinutasNavigator"
-    val LISTADO_MINUTAS = "ListadoMinutas"
-    val NUEVA_MINUTA = "NuevaMinuta"
+    object ListadoMinutas : Routes("ListadoMinutas")
+
+    object NuevaMinuta : Routes("NuevaMinuta?minutaId={minutaId}") {
+        fun conParametro(minutaId: Int = 0) = "NuevaMinuta?minutaId=$minutaId"
+        fun sinParametro() = "NuevaMinuta?minutaId=0"
+    }
+
 
     // stack de recetas
-    val LISTADO_RECETAS = "ListadoRecetas"
-    val NUEVA_RECETA = "NuevaReceta"
+    object ListadoRecetas : Routes("ListadoRecetas")
+    object NuevaReceta : Routes("NuevaReceta?recetaId={recetaId}") {
+        fun conParametro(recetaId: Int) = "NuevaReceta?recetaId=$recetaId"
+        fun sinParametro() = "NuevaReceta?recetaId=0"
+    }
+
 
     // stack de perfil
-    val PERFIL = "Perfil"
+    object Perfil : Routes("Perfil")
+
+
 }

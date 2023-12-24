@@ -15,6 +15,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -31,7 +32,14 @@ import com.app.recetasEIngredientes.constantes.Fuentes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NuevaReceta(nuevaRecetaVM: NuevaRecetaViewModel) {
+fun NuevaReceta(
+    nuevaRecetaVM: NuevaRecetaViewModel,
+    recetaId: Int?
+) {
+
+    LaunchedEffect(key1 = recetaId) {
+        nuevaRecetaVM.cargarReceta(recetaId ?: 0)
+    }
 
     Scaffold(
         topBar = {
@@ -45,16 +53,19 @@ fun NuevaReceta(nuevaRecetaVM: NuevaRecetaViewModel) {
         FormularioNuevaReceta(
             modifier = Modifier.padding(it),
             nuevaRecetaVM = nuevaRecetaVM,
-            //guardarFormulario = {nuevaRecetaVM.guardarReceta()}
+            recetaId = recetaId
         )
 
     }
 }
 
+// --------------------- composables ---------------------
+
 @Composable
 fun FormularioNuevaReceta(
     modifier: Modifier = Modifier,
     nuevaRecetaVM: NuevaRecetaViewModel,
+    recetaId: Int?
 ) {
 
     Column(
@@ -74,7 +85,7 @@ fun FormularioNuevaReceta(
 
         BotonApp(
             value = "Guardar",
-            onPress = {nuevaRecetaVM.agregarNuevaReceta()}
+            onPress = { nuevaRecetaVM.guardarReceta(recetaId ?: 0) }
         )
 
     }

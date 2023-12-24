@@ -66,7 +66,7 @@ class LoginViewModel(navController: NavHostController) : ViewModel() {
 
     // navegar a la pantalla de crear cuenta
     fun navigateToCreateAccount() {
-        _navController.navigate(Routes.CREATE_ACCOUNT)
+        _navController.navigate(Routes.CreateAccount.ruta)
     }
 
     // navegar a la pantalla principal
@@ -74,7 +74,7 @@ class LoginViewModel(navController: NavHostController) : ViewModel() {
 
         // solo navegamos si el login esta habilitado
         if (_isLoginEnabled.value == true) {
-            _navController.navigate(Routes.MENU_PRINCIPAL)
+            _navController.navigate(Routes.MenuPrincipal.ruta)
         }
 
     }

@@ -8,8 +8,8 @@ class MainMenuModel {
 
     // listado de pantallas
     val itemsMenu = listOf(
-        MenuItem.ListadoMinutas,
         MenuItem.Recetas,
+        MenuItem.ListadoMinutas,
         MenuItem.Perfil
     )
 
@@ -22,23 +22,24 @@ sealed class MenuItem(
     @DrawableRes val iconSelected: Int,
     @DrawableRes val iconUnselected: Int
 ) {
-    object ListadoMinutas : MenuItem(
-        name = "Minutas",
-        route = Routes.LISTADO_MINUTAS,
-        iconSelected = R.drawable.ic_calendar_selected,
-        iconUnselected = R.drawable.ic_calendar
-    )
 
     object Recetas : MenuItem(
         name = "Recetas",
-        route = Routes.LISTADO_RECETAS,
+        route = Routes.ListadoRecetas.ruta,
         iconSelected = R.drawable.ic_restaurant_selected,
         iconUnselected = R.drawable.ic_restaurant
     )
 
+    object ListadoMinutas : MenuItem(
+        name = "Minutas",
+        route = Routes.ListadoMinutas.ruta,
+        iconSelected = R.drawable.ic_calendar_selected,
+        iconUnselected = R.drawable.ic_calendar
+    )
+
     object Perfil : MenuItem(
         name = "Perfil",
-        route = Routes.PERFIL,
+        route = Routes.Perfil.ruta,
         iconSelected = R.drawable.ic_account_selected,
         iconUnselected = R.drawable.ic_account
     )

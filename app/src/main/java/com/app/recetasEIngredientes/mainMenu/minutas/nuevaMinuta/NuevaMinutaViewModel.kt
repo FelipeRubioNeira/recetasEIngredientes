@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.app.recetasEIngredientes.mainMenu.minutas.listadoMinutas.ListadoMinutasViewModel
+import com.app.recetasEIngredientes.mainMenu.recetas.listadoRecetas.ListadoRecetasViewModel
 import java.time.LocalDate
 
 
@@ -17,6 +18,7 @@ import java.time.LocalDate
 class NuevaMinutaViewModel(
     val _navController: NavController,
     val _listadoMinutasVM: ListadoMinutasViewModel,
+    val _listadoRecetasVM: ListadoRecetasViewModel
 ) : ViewModel() {
 
 
@@ -49,7 +51,8 @@ class NuevaMinutaViewModel(
     private val _esNuevaMinuta = MutableLiveData<Boolean>()
     val esNuevaMinuta = _esNuevaMinuta
 
-    // ------------------------------ fin de las variables -----------------------------------------
+
+    // ------------------------------ metodos -----------------------------------------
 
     fun goBack() {
         _navController.popBackStack()

@@ -14,17 +14,18 @@ class ListadoMinutasViewModel(val navController: NavController) : ViewModel() {
     val minutas = _minutas
 
     fun navegarCrearNuevaMinuta() {
-        navController.navigate("$Routes.NUEVA_MINUTA?minutaId=")
+        navController.navigate(Routes.NuevaMinuta.sinParametro())
     }
 
     fun navegarEditarMinuta(minutaId: Int) {
-        navController.navigate("$Routes.NUEVA_MINUTA?minutaId=$minutaId")
+        navController.navigate(Routes.NuevaMinuta.conParametro(minutaId))
     }
 
     fun agregarMinuta(titulo: String, fecha: String, diasRecetas: Map<String, String>) {
 
         val nuevaMinuta = NuevaMinutaModel(
-            id = (_minutas.value?.size ?: 0) + 1, // cuento cuantos elementos hay en la lista y le sumo 1
+            id = (_minutas.value?.size
+                ?: 0) + 1, // cuento cuantos elementos hay en la lista y le sumo 1
             titulo = titulo,
             fecha = fecha,
             dias = diasRecetas,
@@ -56,7 +57,7 @@ class ListadoMinutasViewModel(val navController: NavController) : ViewModel() {
 
         val indexElemento = _minutas.value?.indexOfFirst { it.id == idMinuta }
 
-        if(indexElemento != -1 && indexElemento != null){
+        if (indexElemento != -1 && indexElemento != null) {
             _minutas.value?.set(indexElemento, minutaEditada)
         }
 

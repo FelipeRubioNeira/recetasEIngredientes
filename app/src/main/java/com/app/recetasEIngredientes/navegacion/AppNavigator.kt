@@ -23,41 +23,48 @@ import com.app.recetasEIngredientes.mainMenu.recetas.nuevaReceta.NuevaRecetaView
 @Composable
 fun AppNavigator() {
 
+
     val navControllerPrincipal = rememberNavController()
 
-    // recibe el nav controller principal para poder navegar entre las pantallas del stack
+
+    // --------------------- view models ---------------------
+
+    // view model para el listado de recetas
+    val listadoRecetasVM = ListadoRecetasViewModel(navControllerPrincipal)
+
+    // view model para la pantalla de nueva receta o editar receta
+    val nuevaRecetaVM = NuevaRecetaViewModel(navControllerPrincipal, listadoRecetasVM)
+
+
+    // view model para el listado de minutas
     val listadoMinutasVM = ListadoMinutasViewModel(navControllerPrincipal)
 
+    // view model para la pantalla de nueva minuta o editar minuta
     val nuevaMinutasVM = NuevaMinutaViewModel(
         navControllerPrincipal,
         listadoMinutasVM,
-    )
-
-    val listadoRecetasVM = ListadoRecetasViewModel(navControllerPrincipal)
-
-    val nuevaRecetaVM = NuevaRecetaViewModel(
-        navControllerPrincipal,
-        listadoRecetasVM,
+        listadoRecetasVM
     )
 
 
+    // --------------------- navegacion principal ---------------------
     NavHost(
         navController = navControllerPrincipal,
-        startDestination = Routes.MENU_PRINCIPAL
+        startDestination = Routes.MenuPrincipal.ruta
     ) {
 
         // pantalla de login
-        composable(Routes.LOGIN) {
+        composable(Routes.Login.ruta) {
             LoginView(navControllerPrincipal)
         }
 
         // pantalla de crear cuenta
-        composable(Routes.CREATE_ACCOUNT) {
+        composable(Routes.CreateAccount.ruta) {
             CreateAccountView(navControllerPrincipal)
         }
 
         // pantalla de menu principal que contiene un navegador
-        composable(Routes.MENU_PRINCIPAL) {
+        composable(Routes.MenuPrincipal.ruta) {
             MainMenuView(
                 navControllerPrincipal,
                 listadoMinutasVM,
@@ -66,20 +73,18 @@ fun AppNavigator() {
         }
 
         // del menu principal podemos navegar a las minutas
-        composable("$Routes.NUEVA_MINUTA?minutaId={minutaId}",
-            arguments = listOf(
-                navArgument("minutaId") {
-                    type = NavType.IntType
-                    defaultValue = 0
-                }
-            )
+        composable(
+            Routes.NuevaMinuta.ruta,
+            arguments = listOf(navArgument("minutaId") { type = NavType.IntType })
         ) {
             NuevaMinutaView(nuevaMinutasVM, it.arguments?.getInt("minutaId"))
         }
 
-        // nueva receta
-        composable(Routes.NUEVA_RECETA) {
-            NuevaReceta(nuevaRecetaVM)
+        composable(
+            Routes.NuevaReceta.ruta,
+            arguments = listOf(navArgument("recetaId") { type = NavType.IntType })
+        ) {
+            NuevaReceta(nuevaRecetaVM, it.arguments?.getInt("recetaId"))
         }
 
 

@@ -19,17 +19,17 @@ fun MainMenuNavigator(
 
     NavHost(
         navController = navControllerMenu,
-        startDestination = Routes.LISTADO_MINUTAS,
+        startDestination = Routes.ListadoRecetas.ruta
     ) {
 
-        composable(route = Routes.LISTADO_MINUTAS) {
+        composable(route = Routes.ListadoRecetas.ruta) {
+            ListadoRecetasView(listadoRecetasVM)
+        }
+        composable(route = Routes.ListadoMinutas.ruta) {
             ListadoMinutasView(listadoMinutasVM)
         }
 
-        composable(route = Routes.LISTADO_RECETAS) {
-            ListadoRecetasView(listadoRecetasVM)
-        }
-        composable(route = Routes.PERFIL) {
+        composable(route = Routes.Perfil.ruta) {
             PerfilView()
         }
 

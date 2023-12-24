@@ -10,21 +10,23 @@ import com.app.recetasEIngredientes.navegacion.Routes
 class ListadoRecetasViewModel(val navegadorPrincipal: NavController) : ViewModel() {
 
 
-    // --------------------- variables de clase  ---------------------
+    // --------------------- atributos  ---------------------
     val listadoRecetasModel = ListadoRecetasModel()
 
     private val _listadoRecetasOriginal = MutableLiveData(mutableListOf<Receta>())
     private val _listadoRecetas = MutableLiveData(mutableListOf<Receta>())
     val listadoRecetas = _listadoRecetas
 
+
     private val _modalVisible = MutableLiveData(false)
     val modalVisible = _modalVisible
+
 
     private val _valueBusquedaRecetas = MutableLiveData("")
     val valueBusquedaRecetas = _valueBusquedaRecetas
 
 
-    // --------------------- funciones ---------------------
+    // --------------------- metodos ---------------------
     fun buscarReceta(valorBusqueda: String) {
 
         // 1- actualizar el valor de la variable de clase
@@ -58,6 +60,15 @@ class ListadoRecetasViewModel(val navegadorPrincipal: NavController) : ViewModel
         navegadorPrincipal.navigate(ruta)
     }
 
+    fun navegarCrearReceta() {
+        navigateTo(Routes.NuevaReceta.sinParametro())
+    }
+
+    fun navegarEditarReceta(idReceta: Int) {
+        val recetaParaEditar = _listadoRecetasOriginal.value?.find { it.id == idReceta }
+        navigateTo(Routes.NuevaReceta.conParametro(recetaParaEditar?.id ?: 0))
+    }
+
     fun obtenerListadoRecetas() {
 
         if (_listadoRecetas.value?.size!! > 0) return
@@ -86,15 +97,27 @@ class ListadoRecetasViewModel(val navegadorPrincipal: NavController) : ViewModel
 
     }
 
+    fun actualizarReceta(recetaId: Int, nombre: String, descripcion: String) {
+
+        val recetaEditada = Receta(
+            id = recetaId,
+            nombre = nombre,
+            descripcion = descripcion,
+        )
+
+        val indexElemento = _listadoRecetasOriginal.value?.indexOfFirst { it.id == recetaId }
+
+        if (indexElemento != -1 && indexElemento != null) {
+            _listadoRecetasOriginal.value?.set(indexElemento, recetaEditada)
+            _listadoRecetas.value = _listadoRecetasOriginal.value?.toMutableList()
+        }
+
+    }
+
     fun eliminarReceta(idReceta: Int) {
         _listadoRecetas.value =
             _listadoRecetasOriginal.value?.filter { it.id != idReceta }?.toMutableList()
         _listadoRecetasOriginal.value = _listadoRecetas.value?.toMutableList()
-    }
-
-    fun editarReceta(idReceta: Int) {
-        val recetaParaEditar = _listadoRecetasOriginal.value?.find { it.id == idReceta }
-        navigateTo(Routes.NUEVA_RECETA)
     }
 
 
