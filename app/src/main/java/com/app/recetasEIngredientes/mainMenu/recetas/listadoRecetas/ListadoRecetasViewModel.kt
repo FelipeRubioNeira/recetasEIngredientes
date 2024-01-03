@@ -14,6 +14,7 @@ class ListadoRecetasViewModel(val navegadorPrincipal: NavController) : ViewModel
     val listadoRecetasModel = ListadoRecetasModel()
 
     private val _listadoRecetasOriginal = MutableLiveData(mutableListOf<Receta>())
+    val listadoRecetasOriginal = _listadoRecetasOriginal
     private val _listadoRecetas = MutableLiveData(mutableListOf<Receta>())
     val listadoRecetas = _listadoRecetas
 

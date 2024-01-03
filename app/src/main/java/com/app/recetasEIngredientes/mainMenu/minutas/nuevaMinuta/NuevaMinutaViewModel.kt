@@ -18,7 +18,7 @@ import java.time.LocalDate
 class NuevaMinutaViewModel(
     val _navController: NavController,
     val _listadoMinutasVM: ListadoMinutasViewModel,
-    val _listadoRecetasVM: ListadoRecetasViewModel
+    val listadoRecetasVM: ListadoRecetasViewModel
 ) : ViewModel() {
 
 

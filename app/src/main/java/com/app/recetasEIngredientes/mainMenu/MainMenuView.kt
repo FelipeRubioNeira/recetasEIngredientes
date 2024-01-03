@@ -33,6 +33,7 @@ import com.app.recetasEIngredientes.common.componentes.TopBarApp
 import com.app.recetasEIngredientes.constantes.Colores
 import com.app.recetasEIngredientes.constantes.Fuentes
 import com.app.recetasEIngredientes.mainMenu.minutas.listadoMinutas.ListadoMinutasViewModel
+import com.app.recetasEIngredientes.mainMenu.perfil.PerfilViewModel
 import com.app.recetasEIngredientes.mainMenu.recetas.listadoRecetas.ListadoRecetasViewModel
 
 /*
@@ -45,6 +46,7 @@ fun MainMenuView(
     navControllerStack: NavController,
     listadoMinutasVM: ListadoMinutasViewModel,
     listadoRecetasVM: ListadoRecetasViewModel,
+    perfilVM: PerfilViewModel
 ) {
 
     //  controller del menu de los iconos de abajo
@@ -75,7 +77,8 @@ fun MainMenuView(
             MainMenuNavigator(
                 navControllerBotom,
                 listadoMinutasVM,
-                listadoRecetasVM
+                listadoRecetasVM,
+                perfilVM
             )
         }
 

@@ -14,6 +14,7 @@ import com.app.recetasEIngredientes.mainMenu.MainMenuView
 import com.app.recetasEIngredientes.mainMenu.minutas.listadoMinutas.ListadoMinutasViewModel
 import com.app.recetasEIngredientes.mainMenu.minutas.nuevaMinuta.NuevaMinutaView
 import com.app.recetasEIngredientes.mainMenu.minutas.nuevaMinuta.NuevaMinutaViewModel
+import com.app.recetasEIngredientes.mainMenu.perfil.PerfilViewModel
 import com.app.recetasEIngredientes.mainMenu.recetas.listadoRecetas.ListadoRecetasViewModel
 import com.app.recetasEIngredientes.mainMenu.recetas.nuevaReceta.NuevaReceta
 import com.app.recetasEIngredientes.mainMenu.recetas.nuevaReceta.NuevaRecetaViewModel
@@ -46,6 +47,8 @@ fun AppNavigator() {
         listadoRecetasVM
     )
 
+    val perfilVM = PerfilViewModel()
+
 
     // --------------------- navegacion principal ---------------------
     NavHost(
@@ -68,7 +71,8 @@ fun AppNavigator() {
             MainMenuView(
                 navControllerPrincipal,
                 listadoMinutasVM,
-                listadoRecetasVM
+                listadoRecetasVM,
+                perfilVM
             )
         }
 

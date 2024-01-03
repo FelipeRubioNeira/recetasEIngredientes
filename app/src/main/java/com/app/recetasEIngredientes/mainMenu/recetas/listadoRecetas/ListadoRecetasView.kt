@@ -176,11 +176,6 @@ fun Buscador(listadoRecetasVM: ListadoRecetasViewModel) {
             .padding(horizontal = 16.dp)
     ) {
         Busqueda(listadoRecetasVM, Modifier.weight(9f))
-//        Spacer(modifier = Modifier.width(8.dp))
-//        Filtro(
-//            onPress = { listadoRecetasVM.mostrarModal() },
-//            Modifier.weight(1f)
-//        )
     }
 }
 

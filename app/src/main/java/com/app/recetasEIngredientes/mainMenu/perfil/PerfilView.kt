@@ -18,6 +18,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,13 +30,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.app.recetasEIngredientes.common.componentes.BotonEditar
+import com.app.recetasEIngredientes.common.componentes.BotonGuardar
 import com.app.recetasEIngredientes.constantes.Colores
 import com.app.recetasEIngredientes.constantes.Fuentes
 import retrofit2.http.Body
 
-@Preview(showBackground = true, showSystemUi = true)
+
 @Composable
-fun PerfilView() {
+fun PerfilView(perfilVM: PerfilViewModel) {
+
+    val valorNombre: String by perfilVM.nombre.observeAsState("")
+    val estadoIconoNombre: String by perfilVM.estadoIcono.observeAsState("")
 
     Column(
         modifier = Modifier
@@ -43,24 +49,44 @@ fun PerfilView() {
 
     ) {
 
-        HeaderPerfil(titulo = "Hola usuario")
+        HeaderPerfil(titulo = "Perfil de usuario")
 
         BodyPerfil {
 
-           DescripcionPerfil()
+            DescripcionPerfil()
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            ItemPerfil("Edad")
+            ItemPerfil(
+                "Nombre",
+                valor = valorNombre,
+                actualizarValor = { valor ->
+                    perfilVM.actualizarValor(
+                        PerfilModel.ITEMS_PERFIL.NOMBRE,
+                        valor
+                    )
+                },
+                estadoIcono = estadoIconoNombre,
+                perfilVM = perfilVM,
+                itemPerfil = PerfilModel.ITEMS_PERFIL.NOMBRE,
+            )
+
             Spacer(modifier = Modifier.height(4.dp))
 
-            ItemPerfil("Peso")
-            Spacer(modifier = Modifier.height(4.dp))
-
-            ItemPerfil("Sexo")
-            Spacer(modifier = Modifier.height(4.dp))
-
-            ItemPerfil("Estatura")
+//            ItemPerfil("Edad")
+//            Spacer(modifier = Modifier.height(4.dp))
+//
+//            ItemPerfil("Peso")
+//            Spacer(modifier = Modifier.height(4.dp))
+//
+//            ItemPerfil("Sexo")
+//            Spacer(modifier = Modifier.height(4.dp))
+//
+//            ItemPerfil("Estatura (cms)")
+//            Spacer(modifier = Modifier.height(16.dp))
+//
+//            ItemPerfil("Actividad fisica")
+//            Spacer(modifier = Modifier.height(4.dp))
         }
 
     }
@@ -85,24 +111,24 @@ fun HeaderPerfil(titulo: String) {
 
         )
     }
-
 }
 
 @Composable
 fun BodyPerfil(itemsFormulario: @Composable () -> Unit) {
 
-    Column (
+    Column(
         modifier = Modifier.padding(16.dp)
-    ){
+    ) {
         itemsFormulario()
     }
 
 }
 
 @Composable
-fun DescripcionPerfil(){
+fun DescripcionPerfil() {
 
-    Text(text = "Puedes editar cualquiera de tus estadisticas presionando sobre el icono de lapiz:",
+    Text(
+        text = "Puedes editar cualquiera de tus estadisticas presionando sobre el icono de lapiz:",
         color = Colores.GRIS,
         fontSize = 16.sp,
         fontFamily = Fuentes.REM_MEDIUM,
@@ -111,8 +137,16 @@ fun DescripcionPerfil(){
     )
 
 }
+
 @Composable
-fun ItemPerfil(titulo: String = "Nombre"){
+fun ItemPerfil(
+    titulo: String = "",
+    valor: String = "",
+    actualizarValor: (String) -> Unit = { },
+    estadoIcono: String = PerfilModel.ESTADO_ICONO.EDITAR, // por defecto el estado es editar
+    perfilVM: PerfilViewModel,
+    itemPerfil: String,
+) {
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -120,10 +154,21 @@ fun ItemPerfil(titulo: String = "Nombre"){
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
-    ){
+    ) {
+
+        // nombre del campo
         Etiqueta(titulo = titulo, Modifier.weight(1f))
-        CampoTexto(Modifier.weight(2f))
-        IconoEditarGuardar()
+
+        // campo de texto
+        CampoTexto(
+            Modifier.weight(2f),
+            valor,
+            actualizarValor,
+            estadoIcono
+        )
+
+        // icono de editar o guardar
+        IconoEditarGuardar(estadoIcono, perfilVM, itemPerfil)
     }
 }
 
@@ -140,35 +185,53 @@ fun Etiqueta(titulo: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun CampoTexto(modifier: Modifier) {
+fun CampoTexto(
+    modifier: Modifier,
+    valor: String,
+    actualizarValor: (String) -> Unit = { },
+    estadoIcono: String
+) {
 
     BasicTextField(
-        value = "",
-        onValueChange = { },
-
+        value = valor,
+        onValueChange = actualizarValor,
         maxLines = 1,
         textStyle = TextStyle(
             color = Color.Black,
             fontSize = 20.sp,
             fontFamily = Fuentes.REM_LIGHT,
         ),
-
-        modifier = modifier
-
+        modifier = modifier,
+        readOnly = estadoIcono === PerfilModel.ESTADO_ICONO.EDITAR
     )
 }
 
 /* Icono que por defecto aparece con un lapiz para editar,
     pero inmediatamente al presionarlo se convierte en un disquet para guardar*/
 @Composable
-fun IconoEditarGuardar(){
+fun IconoEditarGuardar(
+    estadoIcono: String,
+    perfilVM: PerfilViewModel,
+    itemPerfil: String
+) {
 
-    BotonEditar(
-        onClick = {},
-        color = Colores.GRIS_OSCURO
-    )
+    if (estadoIcono === PerfilModel.ESTADO_ICONO.EDITAR) {
+
+        BotonEditar(
+            onClick = { perfilVM.activarEdicion(itemPerfil) },
+            color = Colores.GRIS_OSCURO
+        )
+
+    } else {
+        BotonGuardar(
+            onClick = { perfilVM.guardarEdicion(itemPerfil) },
+            color = Colores.GRIS_OSCURO
+        )
+    }
 
 }
+
+
 
         
 

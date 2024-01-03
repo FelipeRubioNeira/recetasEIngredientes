@@ -2,23 +2,20 @@ package com.app.recetasEIngredientes.mainMenu.perfil
 
 class PerfilModel {
 
-    fun obtenerDatosPerfil(): List<ItemPerfil> {
-
-        return listOf(
-            ItemPerfil(preguntaId = 1, pregunta = "Edad", respuesta = ""),
-        )
+    object ESTADO_ICONO {
+        const val EDITAR = "editar"
+        const val GUARDAR = "guardar"
     }
+
+    object ITEMS_PERFIL {
+        const val NOMBRE = "nombre"
+        const val EDAD = "edad"
+        const val PESO = "peso"
+        const val SEXO = "sexo"
+        const val ALTURA = "altura"
+        const val ACTIVIDAD_FISICA = "actividadFisica"
+    }
+
 
 }
 
-/* corresponde a las preguntas que vienen en el perfil
-*   - Edad
-*   - Peso
-*   - Sexo
-*     etc
-* */
-data class ItemPerfil(
-    val preguntaId: Int,
-    val pregunta: String,
-    val respuesta: String
-)

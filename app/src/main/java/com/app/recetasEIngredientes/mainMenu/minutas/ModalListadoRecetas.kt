@@ -116,16 +116,7 @@ fun BodyModal(
     nuevaMinutaVM: NuevaMinutaViewModel
 ) {
 
-    // listado de recetas provisorio
-    /*    val ListaRecetas = listOf(
-            "Receta 1",
-            "Receta 2",
-            "Receta 3",
-            "Receta 4",
-            "Receta 5",
-        )*/
-
-    val listadoRecetas: MutableList<Receta> by nuevaMinutaVM._listadoRecetasVM.listadoRecetas.observeAsState(
+    val listadoRecetas: MutableList<Receta> by nuevaMinutaVM.listadoRecetasVM.listadoRecetasOriginal.observeAsState(
         mutableListOf()
     )
 

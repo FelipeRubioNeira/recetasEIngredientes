@@ -5,6 +5,7 @@ import androidx.navigation.compose.composable
 import com.app.recetasEIngredientes.mainMenu.minutas.listadoMinutas.ListadoMinutasView
 import com.app.recetasEIngredientes.mainMenu.minutas.listadoMinutas.ListadoMinutasViewModel
 import com.app.recetasEIngredientes.mainMenu.perfil.PerfilView
+import com.app.recetasEIngredientes.mainMenu.perfil.PerfilViewModel
 import com.app.recetasEIngredientes.mainMenu.recetas.listadoRecetas.ListadoRecetasView
 import com.app.recetasEIngredientes.mainMenu.recetas.listadoRecetas.ListadoRecetasViewModel
 import com.app.recetasEIngredientes.navegacion.Routes
@@ -13,7 +14,8 @@ import com.app.recetasEIngredientes.navegacion.Routes
 fun MainMenuNavigator(
     navControllerMenu: NavHostController,
     listadoMinutasVM: ListadoMinutasViewModel,
-    listadoRecetasVM: ListadoRecetasViewModel
+    listadoRecetasVM: ListadoRecetasViewModel,
+    perfilVM: PerfilViewModel
 ) {
 
 
@@ -30,7 +32,7 @@ fun MainMenuNavigator(
         }
 
         composable(route = Routes.Perfil.ruta) {
-            PerfilView()
+            PerfilView(perfilVM)
         }
 
     }
