@@ -40,7 +40,19 @@ import retrofit2.http.Body
 fun PerfilView(perfilVM: PerfilViewModel) {
 
     val valorNombre: String by perfilVM.nombre.observeAsState("")
-    val estadoIconoNombre: String by perfilVM.estadoIcono.observeAsState("")
+    val estadoIconoNombre: String by perfilVM.estadoIconoNombre.observeAsState("")
+
+    val valorEdad: String by perfilVM.edad.observeAsState("")
+    val estadoIconoEdad: String by perfilVM.estadoIconoEdad.observeAsState("")
+
+    val valorPeso: String by perfilVM.peso.observeAsState("")
+    val estadoIconoPeso: String by perfilVM.estadoIconoPeso.observeAsState("")
+
+    val valorAltura: String by perfilVM.altura.observeAsState("")
+    val estadoIconoAltura: String by perfilVM.estadoIconoAltura.observeAsState("")
+
+    val valorSexo: String by perfilVM.sexo.observeAsState("")
+    val estadoIconoSexo: String by perfilVM.estadoIconoSexo.observeAsState("")
 
     Column(
         modifier = Modifier
@@ -57,8 +69,8 @@ fun PerfilView(perfilVM: PerfilViewModel) {
 
             Spacer(modifier = Modifier.height(8.dp))
 
+            // nombre
             ItemPerfil(
-                "Nombre",
                 valor = valorNombre,
                 actualizarValor = { valor ->
                     perfilVM.actualizarValor(
@@ -73,20 +85,68 @@ fun PerfilView(perfilVM: PerfilViewModel) {
 
             Spacer(modifier = Modifier.height(4.dp))
 
-//            ItemPerfil("Edad")
-//            Spacer(modifier = Modifier.height(4.dp))
-//
-//            ItemPerfil("Peso")
-//            Spacer(modifier = Modifier.height(4.dp))
-//
-//            ItemPerfil("Sexo")
-//            Spacer(modifier = Modifier.height(4.dp))
-//
-//            ItemPerfil("Estatura (cms)")
-//            Spacer(modifier = Modifier.height(16.dp))
-//
-//            ItemPerfil("Actividad fisica")
-//            Spacer(modifier = Modifier.height(4.dp))
+            // edad
+            ItemPerfil(
+                valor = valorEdad,
+                actualizarValor = { valor ->
+                    perfilVM.actualizarValor(
+                        PerfilModel.ITEMS_PERFIL.EDAD,
+                        valor
+                    )
+                },
+                estadoIcono = estadoIconoEdad,
+                perfilVM = perfilVM,
+                itemPerfil = PerfilModel.ITEMS_PERFIL.EDAD,
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            // peso
+            ItemPerfil(
+                valor = valorPeso,
+                actualizarValor = { valor ->
+                    perfilVM.actualizarValor(
+                        PerfilModel.ITEMS_PERFIL.PESO,
+                        valor
+                    )
+                },
+                estadoIcono = estadoIconoPeso,
+                perfilVM = perfilVM,
+                itemPerfil = PerfilModel.ITEMS_PERFIL.PESO,
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            // altura
+            ItemPerfil(
+                valor = valorAltura,
+                actualizarValor = { valor ->
+                    perfilVM.actualizarValor(
+                        PerfilModel.ITEMS_PERFIL.ALTURA,
+                        valor
+                    )
+                },
+                estadoIcono = estadoIconoAltura,
+                perfilVM = perfilVM,
+                itemPerfil = PerfilModel.ITEMS_PERFIL.ALTURA,
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            // Sexo
+            ItemPerfil(
+                valor = valorSexo,
+                actualizarValor = { valor ->
+                    perfilVM.actualizarValor(
+                        PerfilModel.ITEMS_PERFIL.SEXO,
+                        valor
+                    )
+                },
+                estadoIcono = estadoIconoSexo,
+                perfilVM = perfilVM,
+                itemPerfil = PerfilModel.ITEMS_PERFIL.SEXO,
+            )
+
         }
 
     }
@@ -140,7 +200,6 @@ fun DescripcionPerfil() {
 
 @Composable
 fun ItemPerfil(
-    titulo: String = "",
     valor: String = "",
     actualizarValor: (String) -> Unit = { },
     estadoIcono: String = PerfilModel.ESTADO_ICONO.EDITAR, // por defecto el estado es editar
@@ -157,7 +216,7 @@ fun ItemPerfil(
     ) {
 
         // nombre del campo
-        Etiqueta(titulo = titulo, Modifier.weight(1f))
+        Etiqueta(titulo = itemPerfil, Modifier.weight(1f))
 
         // campo de texto
         CampoTexto(

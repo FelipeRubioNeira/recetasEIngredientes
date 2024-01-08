@@ -43,6 +43,7 @@ import com.app.recetasEIngredientes.constantes.Colores
 import com.app.recetasEIngredientes.constantes.Fuentes
 import com.app.recetasEIngredientes.mainMenu.minutas.nuevaMinuta.NuevaMinutaModel
 import com.app.recetasEIngredientes.navegacion.Routes
+import org.w3c.dom.Text
 
 
 @Composable
@@ -54,13 +55,16 @@ fun ListadoMinutasView(listadoMinutasVM: ListadoMinutasViewModel) {
             .background(Color.White)
     ) {
 
-        ListadoMinutas(listadoMinutasVM)
+        if ((listadoMinutasVM.minutas.value?.size ?: 0) > 0) ListadoMinutas(listadoMinutasVM)
+        else PantallaVacia(
+            "Presiona el botón + para crear tu primera minuta."
+        )
 
         BotonAgregar(
             modifier = Modifier.align(alignment = BottomEnd),
             color = Colores.ROJO,
             onPress = { listadoMinutasVM.navegarCrearNuevaMinuta() }
-        ) // BotonAgregar
+        )
     }
 }
 
@@ -163,21 +167,33 @@ fun MinutaItem(
 
 }
 
-
 @Composable
-fun BotonAgregarMinuta(
-    listadoMinutasVM: ListadoMinutasViewModel,
-    modifier: Modifier,
+fun PantallaVacia(
+    descripcion: String = ""
 ) {
 
-    FloatingActionButton(
-        containerColor = Colores.ROJO,
-        contentColor = Colores.BLANCO,
-        modifier = modifier.padding(16.dp),
-        onClick = { listadoMinutasVM.navegarCrearNuevaMinuta() }
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
     ) {
-        Icon(Icons.Default.Add, contentDescription = "Add")
+        Icon(
+            painter = painterResource(id = R.drawable.ic_ramen),
+            tint = Colores.ROJO,
+            contentDescription = "icono de ramen",
+            modifier = Modifier.size(150.dp)
+        )
+
+        Spacer(modifier = Modifier.padding(8.dp))
+
+        Text(
+            text = descripcion,
+            color = Colores.NEGRO,
+            fontFamily = Fuentes.REM_MEDIUM,
+            textAlign = TextAlign.Center,
+            fontSize = 18.sp
+        )
     }
 }
-
-

@@ -8,12 +8,12 @@ class PerfilModel {
     }
 
     object ITEMS_PERFIL {
-        const val NOMBRE = "nombre"
-        const val EDAD = "edad"
-        const val PESO = "peso"
-        const val SEXO = "sexo"
-        const val ALTURA = "altura"
-        const val ACTIVIDAD_FISICA = "actividadFisica"
+        const val NOMBRE = "Nombre"
+        const val EDAD = "Edad"
+        const val PESO = "Peso"
+        const val SEXO = "Sexo"
+        const val ALTURA = "Altura"
+        const val ACTIVIDAD_FISICA = "Actividad Física"
     }
 
 

@@ -7,27 +7,43 @@ class PerfilViewModel : ViewModel() {
 
 
     // -------------------------- atributos --------------------------
+
+    // .. valores de los items del perfil
     private val _nombre = MutableLiveData<String>()
     val nombre = _nombre
 
-    private val _estadoIcono = MutableLiveData(PerfilModel.ESTADO_ICONO.EDITAR)
-    val estadoIcono = _estadoIcono
-
-
-    private val _edad = MutableLiveData<Int>()
+    private val _edad = MutableLiveData<String>()
     val edad = _edad
 
-    private val _peso = MutableLiveData<Int>()
+    private val _peso = MutableLiveData<String>()
     val peso = _peso
+
+    private val _altura = MutableLiveData<String>()
+    val altura = _altura
 
     private val _sexo = MutableLiveData<String>()
     val sexo = _sexo
 
-    private val _altura = MutableLiveData<Int>()
-    val altura = _altura
-
     private val _actividadFisica = MutableLiveData<String>()
     val actividadFisica = _actividadFisica
+
+
+    // .. estado de los iconos de los items del perfil
+    private val _estadoIconoNombre = MutableLiveData(PerfilModel.ESTADO_ICONO.EDITAR)
+    val estadoIconoNombre = _estadoIconoNombre
+
+    private val _estadoIconoEdad = MutableLiveData(PerfilModel.ESTADO_ICONO.EDITAR)
+    val estadoIconoEdad = _estadoIconoEdad
+
+    private val _estadoIconoPeso = MutableLiveData(PerfilModel.ESTADO_ICONO.EDITAR)
+    val estadoIconoPeso = _estadoIconoPeso
+
+    private val _estadoIconoAltura = MutableLiveData(PerfilModel.ESTADO_ICONO.EDITAR)
+    val estadoIconoAltura = _estadoIconoAltura
+
+    private val _estadoIconoSexo = MutableLiveData(PerfilModel.ESTADO_ICONO.EDITAR)
+    val estadoIconoSexo = _estadoIconoSexo
+
 
 
     // -------------------------- metodos --------------------------
@@ -36,40 +52,34 @@ class PerfilViewModel : ViewModel() {
 
         when (itemPerfil) {
             PerfilModel.ITEMS_PERFIL.NOMBRE -> _nombre.value = valor
-            PerfilModel.ITEMS_PERFIL.EDAD -> _edad.value = valor.toInt()
-            PerfilModel.ITEMS_PERFIL.PESO -> _peso.value = valor.toInt()
+            PerfilModel.ITEMS_PERFIL.EDAD -> _edad.value = valor
+            PerfilModel.ITEMS_PERFIL.PESO -> _peso.value = valor
             PerfilModel.ITEMS_PERFIL.SEXO -> _sexo.value = valor
-            PerfilModel.ITEMS_PERFIL.ALTURA -> _altura.value = valor.toInt()
+            PerfilModel.ITEMS_PERFIL.ALTURA -> _altura.value = valor
             PerfilModel.ITEMS_PERFIL.ACTIVIDAD_FISICA -> _actividadFisica.value = valor
         }
-
-    }
-
-    val actualizarNombre: (String) -> Unit = { nombre ->
-
-        // 1- actualizar el valor del atributo
-        _nombre.value = nombre
-
-        /* 2- si el valor es diferente del estado anterior entonces cambiamos
-            el estado del boton de editar */
-        _estadoIcono.value =
-            if (nombre != PerfilModel.ESTADO_ICONO.EDITAR) PerfilModel.ESTADO_ICONO.GUARDAR
-            else PerfilModel.ESTADO_ICONO.EDITAR
-
 
     }
 
     val activarEdicion: (String) -> Unit = { itemPerfil ->
 
         when (itemPerfil) {
-            PerfilModel.ITEMS_PERFIL.NOMBRE -> _estadoIcono.value = PerfilModel.ESTADO_ICONO.GUARDAR
+            PerfilModel.ITEMS_PERFIL.NOMBRE -> _estadoIconoNombre.value = PerfilModel.ESTADO_ICONO.GUARDAR
+            PerfilModel.ITEMS_PERFIL.EDAD -> _estadoIconoEdad.value = PerfilModel.ESTADO_ICONO.GUARDAR
+            PerfilModel.ITEMS_PERFIL.PESO -> _estadoIconoPeso.value = PerfilModel.ESTADO_ICONO.GUARDAR
+            PerfilModel.ITEMS_PERFIL.ALTURA -> _estadoIconoAltura.value = PerfilModel.ESTADO_ICONO.GUARDAR
+            PerfilModel.ITEMS_PERFIL.SEXO -> _estadoIconoSexo.value = PerfilModel.ESTADO_ICONO.GUARDAR
         }
     }
 
     val guardarEdicion: (String) -> Unit = { itemPerfil ->
 
         when (itemPerfil) {
-            PerfilModel.ITEMS_PERFIL.NOMBRE -> _estadoIcono.value = PerfilModel.ESTADO_ICONO.EDITAR
+            PerfilModel.ITEMS_PERFIL.NOMBRE -> _estadoIconoNombre.value = PerfilModel.ESTADO_ICONO.EDITAR
+            PerfilModel.ITEMS_PERFIL.EDAD -> _estadoIconoEdad.value = PerfilModel.ESTADO_ICONO.EDITAR
+            PerfilModel.ITEMS_PERFIL.PESO -> _estadoIconoPeso.value = PerfilModel.ESTADO_ICONO.EDITAR
+            PerfilModel.ITEMS_PERFIL.ALTURA -> _estadoIconoAltura.value = PerfilModel.ESTADO_ICONO.EDITAR
+            PerfilModel.ITEMS_PERFIL.SEXO -> _estadoIconoSexo.value = PerfilModel.ESTADO_ICONO.EDITAR
         }
 
     }
